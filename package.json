@@ -19,13 +19,13 @@
   "build": {
     "appId": "com.menumitra.pos",
     "productName": "MenuMitra POS",
-    "publish": {
-      "provider": "github",
-      "owner": "YourGitHubUsername",
-      "repo": "YourRepoName",
-      "private": true,
-      "token": "YOUR_GITHUB_TOKEN"
-    },
+   "publish": {
+  "provider": "github",
+  "owner": "Sugatraj",
+  "repo": "menumitra-pos",
+  "private": true
+},
+
     "directories": {
       "output": "dist",
       "buildResources": "public"
