@@ -185,7 +185,7 @@ function Header() {
 
       {/* Main Header */}
       <header
-        className={`bg-purple-500 shadow-lg fixed w-full z-50 transition-all duration-300 ${
+        className={`bg-cyan-500 shadow-lg fixed w-full z-50 transition-all duration-300 ${
           isNetworkVisible ? "top-5 mt-2" : "top-0 mt-0"
         }`}
       >        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
