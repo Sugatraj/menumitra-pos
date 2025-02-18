@@ -4,7 +4,7 @@
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
-  "author": "Your Name",
+  "author": "Devloper",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

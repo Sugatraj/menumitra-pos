@@ -67,5 +67,5 @@ jobs:
       uses: actions/upload-artifact@v4
       
       with:
-        name: windows-exe
+        name: MenuMitra POS
         path: dist/*.exe
