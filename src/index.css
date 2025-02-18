@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 transition-colors;
+  }
+  
+  body.dark {
+    @apply bg-gray-900 text-gray-100;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white shadow-lg rounded-lg p-4 transition-colors;
+  }
+  
+  .dark .card {
+    @apply bg-gray-800 border border-gray-700;
+  }
+
+  .input {
+    @apply bg-white border-gray-300 text-gray-900 transition-colors;
+  }
+  
+  .dark .input {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+
+  .button-primary {
+    @apply bg-blue-500 hover:bg-blue-600 text-white transition-colors;
+  }
+  
+  .dark .button-primary {
+    @apply bg-blue-600 hover:bg-blue-700;
+  }
+
+  /* Add tooltip dark mode styles */
+  .dark [data-tooltip-id] {
+    @apply text-gray-300;
+  }
+}
+
+@layer utilities {
+  .theme-toggle-shadow {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .theme-toggle-circle {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}

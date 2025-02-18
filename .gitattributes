@@ -1,0 +1,4 @@
+*.exe filter=lfs diff=lfs merge=lfs -text
+*.asar filter=lfs diff=lfs merge=lfs -text
+release/win-unpacked/POS[[:space:]]Outlet.exe filter=lfs diff=lfs merge=lfs -text
+release/win-unpacked/resources/app.asar filter=lfs diff=lfs merge=lfs -text
