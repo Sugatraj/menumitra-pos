@@ -10,7 +10,7 @@ export class UpdateService {
       console.log('Version check response:', response.data); // Debug log
 
       if (response.data.st === 1) {
-        const currentVersion = '0.1.0'; // Hardcoded current version
+        const currentVersion = '1.0.0'; // Hardcoded current version
         const serverVersion = response.data.version;
 
         console.log('Versions:', { current: currentVersion, server: serverVersion }); // Debug log
@@ -31,7 +31,7 @@ export class UpdateService {
       return { 
         hasUpdate: false, 
         error: error.message,
-        currentVersion: '0.1.0',
+        currentVersion: '1.0.0',
         serverVersion: 'Unknown'
       };
     }
