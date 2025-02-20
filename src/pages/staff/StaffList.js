@@ -23,6 +23,7 @@ import { Tooltip } from "react-tooltip";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import StaffUpdate from "./StaffUpdate";
 
 function StaffList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +57,7 @@ function StaffList() {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_listview",
+        "https://menusmitra.xyz/common_api/staff_listview",
         { outlet_id: outlet_id },
         {
           headers: {
@@ -130,7 +131,7 @@ function StaffList() {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_delete",
+        "https://menusmitra.xyz/common_api/staff_delete",
         {
           outlet_id: outlet_id,
           staff_id: staffId,
@@ -189,7 +190,7 @@ function StaffList() {
   
       // Fetch detailed staff data from view API
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_view",
+        "https://menusmitra.xyz/common_api/staff_view",
         {
           outlet_id: outlet_id,
           staff_id: staff.id,
@@ -242,7 +243,7 @@ function StaffList() {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_create",
+        "https://menusmitra.xyz/common_api/staff_create",
         formData,
         {
           headers: {
@@ -307,7 +308,7 @@ function StaffList() {
   
       // Fetch detailed staff data
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_view",
+        "https://menusmitra.xyz/common_api/staff_view",
         {
           outlet_id: outlet_id, // Replace with actual restaurant ID
           staff_id: staff.id, // Pass the staff's ID
@@ -361,7 +362,7 @@ function StaffList() {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/common_api/staff_update",
+        "https://menusmitra.xyz/common_api/staff_update",
         formData,
         {
           headers: {
@@ -594,7 +595,7 @@ function StaffList() {
         </div>
       </div>
       <div className="p-4">
-        <StaffForm
+        <StaffUpdate
           staff={selectedStaff}  // Pass selected staff data for editing
           onSubmit={handleUpdateStaff}  // Handle the form submission
           onCancel={handleCloseEdit}  // Close the form when cancel is clicked

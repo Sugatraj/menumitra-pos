@@ -54,7 +54,7 @@ function ChefList() {
         return;
       }
       const response = await axios.post(
-        "https://men4u.xyz/common_api/chef_listview",
+        "https://menusmitra.xyz/common_api/chef_listview",
         { outlet_id: outlet_id}, {
           headers: {
             Authorization: `Bearer ${accessToken}`, // Attach token in headers
@@ -124,7 +124,7 @@ function ChefList() {
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await axios.post('https://men4u.xyz/common_api/chef_delete', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/chef_delete', {
         outlet_id: outlet_id,  // Replace with actual restaurant ID
         user_id: chefId,
       }, {
@@ -176,7 +176,7 @@ function ChefList() {
         return;
       }
       // Fetch detailed chef data from view API
-      const response = await axios.post("https://men4u.xyz/common_api/chef_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/chef_view", {
         outlet_id: outlet_id,
         user_id: chef.id
       },
@@ -228,7 +228,7 @@ function ChefList() {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/chef_create',
+        'https://menusmitra.xyz/common_api/chef_create',
         formData, // Already formatted in chefForm
         {
           headers: {
@@ -292,7 +292,7 @@ function ChefList() {
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await axios.post("https://men4u.xyz/common_api/chef_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/chef_view", {
         outlet_id: outlet_id, // Replace with actual restaurant ID
         user_id: chef.id, // Pass the chef's ID
       },
@@ -341,7 +341,7 @@ function ChefList() {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/chef_update',
+        'https://menusmitra.xyz/common_api/chef_update',
         formData,
         {
           headers: {

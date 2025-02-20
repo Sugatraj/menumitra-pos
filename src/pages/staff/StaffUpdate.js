@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 import { faTimes, faSave,faImage, } from '@fortawesome/free-solid-svg-icons';
-function StaffForm({ item,staff, onSubmit, onCancel }) {
+function StaffUpdate({ item,staff, onSubmit, onCancel }) {
   const user_id = localStorage.getItem("user_id");
   const [formData, setFormData] = useState({
     name: '',
@@ -20,7 +20,7 @@ function StaffForm({ item,staff, onSubmit, onCancel }) {
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
 
   // Validation functions
@@ -270,7 +270,15 @@ function StaffForm({ item,staff, onSubmit, onCancel }) {
       return dateStr;
     }
   };
-
+  const handleRemoveImage = (e) => {
+    e.stopPropagation(); // Prevent the file input from opening
+    setFormData((prevState) => ({
+      ...prevState,
+      image: null, // Clear the image file
+      imagePreview: null, // Clear the preview URL
+    }));
+  };
+  
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Image Upload */}
@@ -280,20 +288,29 @@ function StaffForm({ item,staff, onSubmit, onCancel }) {
         </label>
         {/* Remove the error message for photo */}
         <div className="flex items-center space-x-4">
-          <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300">
-            {formData.imagePreview ? (
-              <img
-                src={formData.imagePreview}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              
-              <div className="flex items-center justify-center w-full h-full text-gray-400">
-                <FontAwesomeIcon icon={faImage} size="2x" />
-              </div>
-            )}
-          </div>
+        <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300">
+  {formData.imagePreview ? (
+    <>
+      <img
+        src={formData.imagePreview}
+        alt="Preview"
+        className="w-full h-full object-cover"
+      />
+      <button
+        type="button"
+        onClick={handleRemoveImage}
+        className="absolute top-3 right-3 m-1 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 z-10"
+      >
+        <FontAwesomeIcon icon={faTimes} className="h-3 w-3" />
+      </button>
+    </>
+  ) : (
+    <div className="flex items-center justify-center w-full h-full text-gray-400">
+      <FontAwesomeIcon icon={faImage} size="2x" />
+    </div>
+  )}
+</div>
+
           <div>
             <input
               type="file"
@@ -310,8 +327,7 @@ function StaffForm({ item,staff, onSubmit, onCancel }) {
               Choose Photo
             </label>
             {!formData.imagePreview && (
-                         <p className="text-xs text-gray-500 mt-2">No image chosen </p>
-
+              <p className="text-xs text-gray-500 mt-1">No image chosen</p>
             )}
           </div>
         </div>
@@ -486,4 +502,4 @@ function StaffForm({ item,staff, onSubmit, onCancel }) {
   );
 }
 
-export default StaffForm;
+export default StaffUpdate;

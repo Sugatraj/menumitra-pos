@@ -55,7 +55,7 @@ function WaiterList() {
         return;
       }
       const response = await axios.post(
-        "https://men4u.xyz/common_api/waiter_listview",
+        "https://menusmitra.xyz/common_api/waiter_listview",
         { outlet_id: outlet_id},
         {
           headers: {
@@ -129,7 +129,7 @@ function WaiterList() {
         navigate("/login"); // Redirect if token is missing
         return;
       }
-      const response = await axios.post('https://men4u.xyz/common_api/waiter_delete', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/waiter_delete', {
         outlet_id: outlet_id,  // Replace with actual restaurant ID
         user_id: waiterId,
       },
@@ -181,7 +181,7 @@ function WaiterList() {
         return;
       }
       // Fetch detailed waiter data from view API
-      const response = await axios.post("https://men4u.xyz/common_api/waiter_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/waiter_view", {
         outlet_id: outlet_id,
         user_id: waiter.id
       },
@@ -235,7 +235,7 @@ function WaiterList() {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/waiter_create',
+        'https://menusmitra.xyz/common_api/waiter_create',
         formData, // Already formatted in WaiterForm
         {
           headers: {
@@ -302,7 +302,7 @@ function WaiterList() {
         return;
       }
   
-      const response = await axios.post("https://men4u.xyz/common_api/waiter_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/waiter_view", {
         outlet_id: outlet_id, // Replace with actual restaurant ID
         user_id: waiter.id, // Pass the waiter's ID
       },
@@ -354,7 +354,7 @@ function WaiterList() {
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/waiter_update',
+        'https://menusmitra.xyz/common_api/waiter_update',
         formData,
         {
           headers: {

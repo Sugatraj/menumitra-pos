@@ -40,7 +40,7 @@ const TableList = () => {
         return;
       }
   
-      const response = await fetch('https://men4u.xyz/common_api/table_listview', {
+      const response = await fetch('https://menusmitra.xyz/common_api/table_listview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const TableList = () => {
         return;
       }
   
-      const response = await fetch('https://men4u.xyz/common_api/table_create', {
+      const response = await fetch('https://menusmitra.xyz/common_api/table_create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ const TableList = () => {
         return;
       }
   
-      const response = await fetch("https://men4u.xyz/common_api/table_delete", {
+      const response = await fetch("https://menusmitra.xyz/common_api/table_delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -317,7 +317,7 @@ const TableList = () => {
         return;
       }
   
-      const response = await fetch('https://men4u.xyz/common_api/table_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/table_view', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

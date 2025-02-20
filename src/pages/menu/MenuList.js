@@ -39,7 +39,7 @@ function MenuList() {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/menu_listview',
+        'https://menusmitra.xyz/common_api/menu_listview',
         { outlet_id: outlet_id },
         {
           headers: {
@@ -94,7 +94,7 @@ function MenuList() {
   
       // Hit the delete API
       const response = await axios.post(
-        'https://men4u.xyz/common_api/menu_delete',
+        'https://menusmitra.xyz/common_api/menu_delete',
         deleteData,
         {
           headers: {
@@ -144,7 +144,7 @@ function MenuList() {
         return;
       }
       
-      const response = await fetch('https://men4u.xyz/common_api/menu_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_view', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`
@@ -187,7 +187,7 @@ function MenuList() {
         return;
       }
   
-      const response = await fetch('https://men4u.xyz/common_api/menu_update', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_update', {
         method: 'POST',
         body: formData,
         headers: {
@@ -247,7 +247,7 @@ function MenuList() {
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_view', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`

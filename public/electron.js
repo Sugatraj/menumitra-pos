@@ -161,7 +161,7 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'debug';
 autoUpdater.autoDownload = false;
 
-const server = 'https://github.com/Sugatraj/menumitra-pos/releases/download'; // Your repository URL
+const server = 'https://Shekru-Labs-India/menumitra_pos/releases/download'; // Your repository URL
 const feedURL = `${server}/v${app.getVersion()}/`; // Dynamic version
 
 let mainWindow;

@@ -201,7 +201,7 @@ function EditSupplier({ item, onSubmit, onCancel }) {
   
     // Fetch credit rating choices
     axios
-      .get('https://men4u.xyz/common_api/supplier_credit_rating_choices', {
+      .get('https://menusmitra.xyz/common_api/supplier_credit_rating_choices', {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add Authorization header with token
         },
@@ -225,7 +225,7 @@ function EditSupplier({ item, onSubmit, onCancel }) {
   
     // Fetch supplier status choices
     axios
-      .get('https://men4u.xyz/common_api/supplier_status_choices', {
+      .get('https://menusmitra.xyz/common_api/supplier_status_choices', {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add Authorization header with token
         },

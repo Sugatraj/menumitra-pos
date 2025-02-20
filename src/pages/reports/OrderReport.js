@@ -49,7 +49,7 @@ const OrderReport = () => {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/common_api/report_generate",
+        "https://menusmitra.xyz/common_api/report_generate",
         requestData,
         {
           headers: {

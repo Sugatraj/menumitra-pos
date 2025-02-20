@@ -49,7 +49,7 @@ const InventoryReport = () => {
       }
   
       const response = await axios.post(
-        "https://men4u.xyz/pos_outlet/inventory_report_generate",
+        "https://menusmitra.xyz/pos_outlet/inventory_report_generate",
         requestData,
         {
           headers: {

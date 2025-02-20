@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faSpinner, faCheck, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { AutoUpdater } from '../services/AutoUpdater';
+import { faDownload, faSpinner, faCheck, faExclamationTriangle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
+const UpdateDialog = ({ isOpen, currentVersion, serverVersion, onClose }) => {
   const [updateState, setUpdateState] = useState({
     status: 'idle',
     progress: 0,
@@ -64,7 +63,6 @@ const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
 
       await window.updater.checkUpdate();
       await window.updater.downloadUpdate();
-
     } catch (error) {
       setUpdateState({
         status: 'error',
@@ -74,11 +72,6 @@ const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
     }
   };
 
-  const handleInstall = () => {
-    window.electron.startUpdate();
-  };
-
-  // Update progress bar based on status
   const getProgressWidth = () => {
     switch (updateState.status) {
       case 'downloading':
@@ -90,48 +83,20 @@ const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
     }
   };
 
-  // Get button text based on status
-  const getButtonContent = () => {
-    switch (updateState.status) {
-      case 'downloading':
-        return (
-          <>
-            <FontAwesomeIcon icon={faSpinner} spin />
-            <span>Downloading...</span>
-          </>
-        );
-      case 'ready':
-        return (
-          <>
-            <FontAwesomeIcon icon={faCheck} />
-            <span>Install Now</span>
-          </>
-        );
-      case 'error':
-        return (
-          <>
-            <FontAwesomeIcon icon={faExclamationTriangle} />
-            <span>Retry Update</span>
-          </>
-        );
-      default:
-        return (
-          <>
-            <FontAwesomeIcon icon={faDownload} />
-            <span>Update Now</span>
-          </>
-        );
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div
-      className={`bg-white w-full max-w-lg h-auto rounded-t-xl p-6 transform transition-transform duration-300 ease-in-out
-   ${slideIn ? 'translate-y-0' : 'translate-y-0'}`}    >
-      <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+      <div
+        className={`bg-white w-full max-w-lg h-auto rounded-t-xl p-6 transform transition-transform duration-300 ease-in-out
+          ${slideIn ? 'translate-y-0' : 'translate-y-0'}`}
+      >
+        {/* Close button */}
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+          <FontAwesomeIcon icon={faTimes} size="lg" />
+        </button>
+
+        <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
 
         <div className="flex items-start mb-4">
           <div className="flex-1">
@@ -140,9 +105,7 @@ const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
               A new version of MenuMitra POS is ready to install
             </p>
           </div>
-          <div className="ml-4 px-3 py-1 bg-blue-100 rounded-full">
-            <span className="text-xs font-medium text-blue-800">Required</span>
-          </div>
+       
         </div>
 
         <div className="space-y-3 mb-6">
@@ -154,18 +117,15 @@ const UpdateDialog = ({ isOpen, currentVersion, serverVersion }) => {
             <span className="text-gray-500">New version</span>
             <span className="font-medium text-gray-900">{serverVersion}</span>
           </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
             <div 
               className="h-full bg-blue-500 rounded-full transition-all duration-500"
               style={{ width: getProgressWidth() }}
             />
           </div>
 
-          {/* Error message */}
           {updateState.message && (
-            <p className={`text-sm text-center ${
-              updateState.status === 'error' ? 'text-red-500' : 'text-gray-600'
-            }`}>
+            <p className={`text-sm text-center ${updateState.status === 'error' ? 'text-red-500' : 'text-gray-600'}`}>
               {updateState.message}
             </p>
           )}

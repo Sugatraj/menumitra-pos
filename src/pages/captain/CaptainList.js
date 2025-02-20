@@ -56,7 +56,7 @@ const handleBackClick = () => {
         return;
       }
       const response = await axios.post(
-        "https://men4u.xyz/common_api/captain_listview",
+        "https://menusmitra.xyz/common_api/captain_listview",
         { outlet_id: outlet_id},
         {
           headers: {
@@ -127,7 +127,7 @@ const handleBackClick = () => {
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await axios.post('https://men4u.xyz/common_api/captain_delete', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/captain_delete', {
         outlet_id: outlet_id,  // Replace with actual restaurant ID
         user_id: captainId,
       },
@@ -181,7 +181,7 @@ const handleBackClick = () => {
         return;
       }
       // Fetch detailed captain data from view API
-      const response = await axios.post("https://men4u.xyz/common_api/captain_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/captain_view", {
         outlet_id: outlet_id,
         user_id: captain.id
       },
@@ -233,7 +233,7 @@ const handleBackClick = () => {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/captain_create',
+        'https://menusmitra.xyz/common_api/captain_create',
         formData, // Already formatted in captainForm
         {
           headers: {
@@ -300,7 +300,7 @@ const handleBackClick = () => {
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await axios.post("https://men4u.xyz/common_api/captain_view", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/captain_view", {
         outlet_id: outlet_id, // Replace with actual restaurant ID
         user_id: captain.id, // Pass the captain's ID
       },
@@ -349,7 +349,7 @@ const handleBackClick = () => {
         return;
       }
       const response = await axios.post(
-        'https://men4u.xyz/common_api/captain_update',
+        'https://menusmitra.xyz/common_api/captain_update',
         formData,
         {
           headers: {

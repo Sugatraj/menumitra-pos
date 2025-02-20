@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileAlt, faUsers, faBoxes,faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faFileAlt, faUsers, faBoxes,faArrowLeft,faShoppingCart,faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import ReportLock from "../../components/ReportLock";
 import { Tooltip } from 'react-tooltip';
@@ -100,7 +100,7 @@ const handleBackClick = () => {
               className="bg-gray-100 rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-all"
             >
               <FontAwesomeIcon
-                icon={faFileAlt}
+                icon={faShoppingCart}
                 className="text-blue-600 text-4xl mb-4"
               />
               <h2 className="text-xl font-semibold mb-2">Order Report</h2>
@@ -130,7 +130,7 @@ const handleBackClick = () => {
               className="bg-gray-100 rounded-lg shadow-md p-6 text-center"
             >
               <FontAwesomeIcon
-                icon={faBoxes}
+                icon={faWarehouse}
                 className="text-green-600 text-4xl mb-4"
               />
               <h2 className="text-xl font-semibold mb-2">Inventory Report</h2>

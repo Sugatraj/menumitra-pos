@@ -31,7 +31,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
         };
     
         const response = await axios.post(
-          'https://men4u.xyz/common_api/make_menu_special_non_special',
+          'https://menusmitra.xyz/common_api/make_menu_special_non_special',
           requestData,
           {
             headers: {
@@ -149,7 +149,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/menu_categorys', {
+        const response = await fetch('https://menusmitra.xyz/common_api/menu_categorys', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/get_spicy_index_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/get_spicy_index_list', {
           method: 'GET', // Use POST if the API requires it
           headers: {
             'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/rating_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/rating_list', {
           method: 'GET', // Use POST if required by the API
           headers: {
             'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/get_food_type_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/get_food_type_list', {
           method: 'GET', // Use POST if required by the API
           headers: {
             'Content-Type': 'application/json',
@@ -704,7 +704,7 @@ function EditMenu({ menuItem, onUpdate, onCancel }) {
       </div>
       <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
-  Menu Images (Up to 5, Max 5 MB)
+  Menu Images (Up to 5, Max 3 MB)
 </label>
   <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-500 transition-colors">
     <div className="space-y-1 text-center">

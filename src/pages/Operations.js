@@ -18,7 +18,8 @@ import {
   faUtensils,
   faThList,
   faLayerGroup,
-  faList
+  faList,
+  faUserCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 function Operations() {
@@ -73,7 +74,7 @@ function Operations() {
     },
     {
       title: 'Chef',
-      icon: faUtensils, // Updated to a chef hat icon
+      icon: faUserCheck, // Updated to a chef hat icon
      // color: 'border-red-700', // Distinct bold red border
       textColor: 'text-red-700', // Matching text color
       path: '/chef',

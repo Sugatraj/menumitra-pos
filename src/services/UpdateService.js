@@ -3,14 +3,14 @@ import axios from 'axios';
 export class UpdateService {
   static async checkForUpdates() {
     try {
-      const response = await axios.post('https://men4u.xyz/common_api/check_version', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/check_version', {
         app_type: "pos"
       });
 
       console.log('Version check response:', response.data); // Debug log
 
       if (response.data.st === 1) {
-        const currentVersion = '1.0.0'; // Hardcoded current version
+        const currentVersion = '0.1.0'; // Hardcoded current version
         const serverVersion = response.data.version;
 
         console.log('Versions:', { current: currentVersion, server: serverVersion }); // Debug log
@@ -31,7 +31,7 @@ export class UpdateService {
       return { 
         hasUpdate: false, 
         error: error.message,
-        currentVersion: '1.0.0',
+        currentVersion: '0.1.0',
         serverVersion: 'Unknown'
       };
     }

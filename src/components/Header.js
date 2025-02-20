@@ -45,7 +45,7 @@ function Header() {
       const role ="manager"; // Default to "owner"
       const app = "pos";
   
-      const response = await axios.post("https://men4u.xyz/common_api/logout", {
+      const response = await axios.post("https://menusmitra.xyz/common_api/logout", {
         user_id,
         role,
         app,
@@ -95,7 +95,7 @@ function Header() {
         return;
       }
 
-        const response = await axios.post('https://men4u.xyz/common_api/call_waiter', {
+        const response = await axios.post('https://menusmitra.xyz/common_api/call_waiter', {
             outlet_id: parseInt(outlet_id),
             user_id: parseInt(user_id),
         }, {

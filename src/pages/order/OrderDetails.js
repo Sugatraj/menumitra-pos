@@ -88,7 +88,7 @@ const [isDateModified, setIsDateModified] = useState(false);
   
     axios
       .post(
-        "https://men4u.xyz/common_api/order_listview",
+        "https://menusmitra.xyz/common_api/order_listview",
         payload,
         {
           headers: {
@@ -179,7 +179,7 @@ const [isDateModified, setIsDateModified] = useState(false);
     
       try {
         const response = await axios.post(
-          'https://men4u.xyz/common_api/order_view',
+          'https://menusmitra.xyz/common_api/order_view',
           {
             order_number: orderNumber,
           },

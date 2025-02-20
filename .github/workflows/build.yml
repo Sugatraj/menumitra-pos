@@ -9,6 +9,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write  # ✅ Needed for creating releases
+
 jobs:
   build:
     runs-on: windows-latest
@@ -24,48 +27,51 @@ jobs:
         
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
-      
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         
     - name: Install dependencies
-      run: |
-        npm install
+      run: npm install
       env:
         CI: false
         
     - name: Build React app
-      run: |
-        npm run build
+      run: npm run build
       env:
         CI: false
         
     - name: Copy electron.js to build directory
-      run: |
-        Copy-Item -Path "public\electron.js" -Destination "build\electron.js" -Force
+      run: Copy-Item -Path "public\electron.js" -Destination "build\electron.js" -Force
         
     - name: Build Electron app
-      run: |
-        npm run electron:build
+      run: npm run electron:build
       env:
         CI: false
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
+    # ✅ Cleanup all old artifacts before uploading new ones
+    - name: Cleanup All Old Artifacts
+      uses: geekyeggo/delete-artifact@v2
+      with:
+        name: '*'
+        failOnError: false  
+
+    # ✅ Upload the EXE file as an artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: MenuMitra POS
+        path: dist/*.exe
+        retention-days: 1  # ✅ Keeps artifacts for only 1 day
+
+    # ✅ Create a GitHub Release with the built EXE file
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          dist/*.exe
+        files: dist/*.exe
         draft: false
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      
-      with:
-        name: MenuMitra POS
-        path: dist/*.exe

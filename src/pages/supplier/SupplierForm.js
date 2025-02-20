@@ -200,7 +200,7 @@ function SupplierForm({ item, onSubmit, onCancel }) {
       return;
     }
     axios
-    .get('https://men4u.xyz/common_api/supplier_credit_rating_choices', {
+    .get('https://menusmitra.xyz/common_api/supplier_credit_rating_choices', {
       headers: {
         'Authorization': `Bearer ${accessToken}`, // Add Authorization header with token
       },
@@ -222,7 +222,7 @@ function SupplierForm({ item, onSubmit, onCancel }) {
       }
     });
 
-    // axios.get('https://men4u.xyz/common_api/supplier_status_choices')
+    // axios.get('https://menusmitra.xyz/common_api/supplier_status_choices')
     //   .then(response => {
     //     if (response.data.st === 1) {
     //       setSupplierStatusChoices(response.data.supplier_status_choices);

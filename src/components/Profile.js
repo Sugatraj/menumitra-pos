@@ -41,7 +41,7 @@ const Profile = () => {
       }
   
       try {
-        const response = await fetch('https://men4u.xyz/common_api/view_profile_detail', {
+        const response = await fetch('https://menusmitra.xyz/common_api/view_profile_detail', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ const Profile = () => {
     try {
       const formattedDob = formatDateForAPI(dob);
   
-      const response = await fetch('https://men4u.xyz/common_api/update_profile_detail', {
+      const response = await fetch('https://menusmitra.xyz/common_api/update_profile_detail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

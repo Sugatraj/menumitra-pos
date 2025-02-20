@@ -31,7 +31,7 @@ const navigate = useNavigate();
   }, []);
   const access_token = localStorage.getItem('access');
   const fetchCategories = async () => {
-    const response = await fetch('https://men4u.xyz/common_api/menu_category_listview', {
+    const response = await fetch('https://menusmitra.xyz/common_api/menu_category_listview', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const navigate = useNavigate();
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_category_delete', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_category_delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
@@ -126,7 +126,7 @@ const navigate = useNavigate();
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_category_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_category_view', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ const navigate = useNavigate();
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_category_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_category_view', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ const navigate = useNavigate();
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_category_update', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_category_update', {
      
       method: "POST",
       body: formData,
@@ -279,7 +279,7 @@ const navigate = useNavigate();
         navigate('/login'); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/menu_category_create', {
+      const response = await fetch('https://menusmitra.xyz/common_api/menu_category_create', {
         method: "POST",
       body: formData,
       headers: {

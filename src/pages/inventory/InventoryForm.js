@@ -180,7 +180,7 @@ function InventoryForm({ item, onSubmit, onCancel }) {
 
     // Fetch the inventory categories list
     axios
-      .get('https://men4u.xyz/common_api/inventory_category_listview', {
+      .get('https://menusmitra.xyz/common_api/inventory_category_listview', {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add authorization header
         }
@@ -210,7 +210,7 @@ function InventoryForm({ item, onSubmit, onCancel }) {
 
     // Fetch the "In/Out" list
     axios
-      .post('https://men4u.xyz/common_api/get_supplier_list', { outlet_id: outlet_id }, {
+      .post('https://menusmitra.xyz/common_api/get_supplier_list', { outlet_id: outlet_id }, {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add authorization header
         }
@@ -241,7 +241,7 @@ function InventoryForm({ item, onSubmit, onCancel }) {
 
     // Fetch In/Out list
     axios
-      .get('https://men4u.xyz/common_api/get_in_or_out_list', {
+      .get('https://menusmitra.xyz/common_api/get_in_or_out_list', {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add authorization header
         }

@@ -129,7 +129,7 @@ const validateMenuName = (value) => {
           navigate('/login'); // Redirect if token is missing
           return;
         }
-        const response = await fetch('https://men4u.xyz/common_api/menu_categorys', {
+        const response = await fetch('https://menusmitra.xyz/common_api/menu_categorys', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
@@ -170,7 +170,7 @@ const validateMenuName = (value) => {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/get_spicy_index_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/get_spicy_index_list', {
           method: 'GET', // Use POST if the API requires it
           headers: {
             'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ const validateMenuName = (value) => {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/rating_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/rating_list', {
           method: 'GET', // Use POST if required by the API
           headers: {
             'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ const validateMenuName = (value) => {
           return;
         }
 
-        const response = await fetch('https://men4u.xyz/common_api/get_food_type_list', {
+        const response = await fetch('https://menusmitra.xyz/common_api/get_food_type_list', {
           method: 'GET', // Use POST if required by the API
           headers: {
             'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ const validateMenuName = (value) => {
         return;
       }
 
-      const response = await fetch("https://men4u.xyz/common_api/menu_create", {
+      const response = await fetch("https://menusmitra.xyz/common_api/menu_create", {
         method: "POST",
         body: formDataToSend,
         headers: {
@@ -605,7 +605,7 @@ const validateMenuName = (value) => {
       </div>
       <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
-  Menu Images (Up to 5, Max 5 MB)
+  Menu Images (Up to 5, Max 3 MB)
 </label>
         <div className="mt-1 flex flex-wrap gap-4">
           {/* Image previews */}

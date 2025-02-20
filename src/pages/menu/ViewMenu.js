@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFire } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-
+import Slider from 'react-slick';
 import { useNavigate } from 'react-router-dom';
 function ViewMenu({ item, onClose }) {
   const [isSpecial, setIsSpecial] = useState(false);
@@ -34,7 +34,7 @@ const navigate = useNavigate();
       };
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/make_menu_special_non_special',
+        'https://menusmitra.xyz/common_api/make_menu_special_non_special',
         requestData,
         {
           headers: {
@@ -64,15 +64,7 @@ const navigate = useNavigate();
     }
   };
   
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? item.images.length - 1 : prevIndex - 1));
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === item.images.length - 1 ? 0 : prevIndex + 1));
-  };
+ 
   return (
     <div className="col-span-6 transition-all duration-300">
       <div className="bg-white rounded-lg shadow-lg h-full">
@@ -92,45 +84,9 @@ const navigate = useNavigate();
         {/* Content Section */}
         <div className="p-4">
           <div className="grid grid-cols-2 gap-6">
-          {item.images && item.images.length > 0 && (
-  <div className="relative col-span-2 flex flex-wrap justify-start space-x-1">
-    {/* Previous Button */}
-    <button
-      onClick={goToPrevious}
-      className="absolute left-0 top-1/2 transform -translate-y-1/2 p-3 bg-gray-700 text-white rounded-full"
-      aria-label="Previous Image"
-    >
-      &#10094;
-    </button>
+ 
 
-    {/* Slider Wrapper */}
-    <div className="w-full overflow-hidden">
-      <div
-        className="flex transition-transform duration-500"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {item.images.map((imgUrl, index) => (
-          <div key={index} className="w-full flex-shrink-0 p-2">
-            <img
-              src={imgUrl}
-              alt={`${item.name} - Image ${index + 1}`}
-              className="w-full h-60 object-cover rounded-md shadow-md"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
 
-    {/* Next Button */}
-    <button
-      onClick={goToNext}
-      className="absolute right-0 top-1/2 transform -translate-y-1/2 p-3 bg-gray-700 text-white rounded-full"
-      aria-label="Next Image"
-    >
-      &#10095;
-    </button>
-  </div>
-)}
 
 
             {item.category_name && (
@@ -251,7 +207,24 @@ const navigate = useNavigate();
                 <p className="text-sm font-medium text-gray-400">Description</p>
               </div>
             )}
- 
+          {item.images && item.images.length > 0 && (
+  <div className="relative col-span-2 flex flex-wrap justify-start space-x-1">
+    {/* Displaying images with dynamic grid layout */}
+    <div
+      className={`grid gap-1 w-full ${item.images.length === 1 ? 'grid-cols-1' : item.images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}
+    >
+      {item.images.map((imgUrl, index) => (
+        <div key={index} className="flex justify-center">
+          <img
+            src={imgUrl}
+            alt={`${item.name} - Image ${index + 1}`}
+            className="w-15 h-15 object-cover rounded-md shadow-md"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
            
           </div>

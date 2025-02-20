@@ -65,7 +65,7 @@ function OrderView({ item, onClose, loading, error, onStatusUpdate }) {
     }
 
     try {
-      const response = await fetch('https://men4u.xyz/common_api/update_order_status', {
+      const response = await fetch('https://menusmitra.xyz/common_api/update_order_status', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -339,7 +339,7 @@ function OrderView({ item, onClose, loading, error, onStatusUpdate }) {
       }
 
       try {
-        const response = await fetch('https://men4u.xyz/common_api/update_order_status', {
+        const response = await fetch('https://menusmitra.xyz/common_api/update_order_status', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

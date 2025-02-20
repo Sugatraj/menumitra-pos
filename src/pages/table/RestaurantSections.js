@@ -84,7 +84,7 @@ const [showIcons, setShowIcons] = useState(false);
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/section_listview',
+        'https://menusmitra.xyz/common_api/section_listview',
         { outlet_id: outlet_id },
         {
           headers: {
@@ -125,7 +125,7 @@ const [showIcons, setShowIcons] = useState(false);
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/section_create',
+        'https://menusmitra.xyz/common_api/section_create',
         {
           outlet_id: outlet_id,
           section_name: newSection.name,
@@ -167,7 +167,7 @@ const [showIcons, setShowIcons] = useState(false);
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/section_view',
+        'https://menusmitra.xyz/common_api/section_view',
         {
           outlet_id: outlet_id,
           section_id: sectionId, // Pass sectionId here
@@ -219,7 +219,7 @@ const [showIcons, setShowIcons] = useState(false);
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/section_update',
+        'https://menusmitra.xyz/common_api/section_update',
         {
           outlet_id: outlet_id,
           section_id: selectedSection.section_id,
@@ -275,7 +275,7 @@ const [showIcons, setShowIcons] = useState(false);
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/section_delete',
+        'https://menusmitra.xyz/common_api/section_delete',
         {
           outlet_id: outlet_id, // Adjust based on the actual restaurant ID
           section_id: sectionToDelete.section_id, // Pass the selected section ID

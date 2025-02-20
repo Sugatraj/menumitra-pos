@@ -40,7 +40,7 @@ const user_id = localStorage.getItem('user_id');
         navigate("/login");         return;
       }
   
-      const response = await axios.post('https://men4u.xyz/common_api/supplier_listview', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/supplier_listview', {
         outlet_id: outlet_id,
       }, {
         headers: {
@@ -103,7 +103,7 @@ const user_id = localStorage.getItem('user_id');
         navigate("/login");         return;
       }
   
-      const response = await axios.post('https://men4u.xyz/common_api/supplier_delete', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/supplier_delete', {
         supplier_id: id,
         outlet_id: outlet_id,
       }, {
@@ -153,7 +153,7 @@ const user_id = localStorage.getItem('user_id');
       console.log("Access Token:", accessToken); // Log token to verify it's set correctly
   
       setLoading(true);
-      const response = await axios.post('https://men4u.xyz/common_api/supplier_view', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/supplier_view', {
         supplier_id: item.id,
         outlet_id: outlet_id,
       }, {
@@ -190,7 +190,7 @@ const user_id = localStorage.getItem('user_id');
         navigate("/login");         return;
       }
   
-      const response = await axios.post('https://men4u.xyz/common_api/supplier_view', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/supplier_view', {
         supplier_id: id,
         outlet_id: outlet_id,
       }, {
@@ -226,7 +226,7 @@ const user_id = localStorage.getItem('user_id');
         navigate("/login");         return;
       }
   
-      const response = await axios.post('https://men4u.xyz/common_api/supplier_update', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/supplier_update', {
         user_id: user_id,
         supplier_id: updatedItem.supplier_id, // Ensure this is being passed correctly
         outlet_id: outlet_id,
@@ -283,7 +283,7 @@ const user_id = localStorage.getItem('user_id');
       }
   
       const response = await axios.post(
-        'https://men4u.xyz/common_api/supplier_create', 
+        'https://menusmitra.xyz/common_api/supplier_create', 
         {
           outlet_id: outlet_id, // Ensure you are passing outlet_id as needed
           name: newItem.name,

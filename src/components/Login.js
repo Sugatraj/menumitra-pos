@@ -83,17 +83,17 @@ function Login() {
       return;
     }
     setIsSendingOtp(true);
-    const updateResult = await UpdateService.checkForUpdates();
-    if (updateResult.hasUpdate) {
-      setUpdateInfo({
-        isOpen: true,
-        currentVersion: updateResult.currentVersion,
-        serverVersion: updateResult.serverVersion
-      });
-      return; // Prevent login if update is required
-    }
+    // const updateResult = await UpdateService.checkForUpdates();
+    // if (updateResult.hasUpdate) {
+    //   setUpdateInfo({
+    //     isOpen: true,
+    //     currentVersion: updateResult.currentVersion,
+    //     serverVersion: updateResult.serverVersion
+    //   });
+    //   return; // Prevent login if update is required
+    // }
     try {
-      const response = await fetch('https://men4u.xyz/common_api/user_login', {
+      const response = await fetch('https://menusmitra.xyz/common_api/user_login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile, role: 'manager' }),
@@ -141,7 +141,7 @@ function Login() {
     try {
       const fcmToken = await generateFCMToken();
       localStorage.setItem('fcm_token', fcmToken);
-      const response = await fetch('https://men4u.xyz/pos_outlet/verify_otp', {
+      const response = await fetch('https://menusmitra.xyz/pos_outlet/verify_otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -216,7 +216,7 @@ localStorage.setItem('refresh',refresh)
     setTimer(15); // Reset timer
     setIsSendingOtp(true);
     try {
-      const response = await fetch('https://men4u.xyz/common_api/resend_otp', {
+      const response = await fetch('https://menusmitra.xyz/common_api/resend_otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile, role: 'manager' }),

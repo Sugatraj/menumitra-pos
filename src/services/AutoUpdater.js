@@ -3,7 +3,7 @@ import axios from 'axios';
 export class AutoUpdater {
   static async downloadUpdate() {
     try {
-      const response = await axios.get('https://men4u.xyz/common_api/get_update', {
+      const response = await axios.get('https://menusmitra.xyz/common_api/get_update', {
         responseType: 'blob'
       });
       

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
   const [formData, setFormData] = useState({
@@ -46,8 +46,6 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
   
     return errors;
   };
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,6 +76,15 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
     }
   };
 
+  const handleRemoveImage = (e) => {
+    e.stopPropagation(); // Prevent the file input from opening
+    setFormData((prevState) => ({
+      ...prevState,
+      image: null, // Clear the image file
+      imagePreview: null, // Clear the preview URL
+    }));
+  };
+  
   const handleCancel = () => {
     if (onClose) {
       onClose();
@@ -92,13 +99,13 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
             <span className="text-red-500">*</span> Category
           </label>
           <input
-  type="text"
-  required
-  value={formData.category_name}
-  onChange={handleCategoryNameChange} // Use the new change handler
-  className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
-  placeholder="Enter category"
-/>
+            type="text"
+            required
+            value={formData.category_name}
+            onChange={handleCategoryNameChange} // Use the new change handler
+            className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
+            placeholder="Enter category"
+          />
 
           {errors.category_name && (
             <p className="text-red-500 text-xs mt-1">{errors.category_name}</p>
@@ -109,19 +116,29 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
       {/* Image Upload */}
       <div>
         <label className="block text-sm font-medium text-gray-700">
-           Category Image
+          Category Image
         </label>
         <div
-          className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer"
+          className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer relative"
           onClick={() => document.getElementById('image-upload').click()} // Trigger file input click
         >
           <div className="space-y-1 text-center">
             {formData.imagePreview ? (
-              <img
-                src={formData.imagePreview}
-                alt="Preview"
-                className="mx-auto h-32 w-32 object-cover rounded-md"
-              />
+              <div className="relative">
+                <img
+                  src={formData.imagePreview}
+                  alt="Preview"
+                  className="mx-auto h-32 w-32 object-cover rounded-md"
+                />
+             
+                <button
+                                type="button"
+                                onClick={handleRemoveImage}
+                                className="absolute top-1 right-1 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
+                              >
+                                <FontAwesomeIcon icon={faTimes} className="h-3 w-3" />
+                              </button>
+              </div>
             ) : (
               <FontAwesomeIcon icon={faUpload} className="mx-auto h-12 w-12 text-gray-400" />
             )}
@@ -141,7 +158,7 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
                 onChange={handleImageChange}
               />
             </div>
-            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+            <p className="text-xs text-gray-500">PNG, JPG up to 3MB</p>
           </div>
         </div>
         {errors.image && (
@@ -155,8 +172,7 @@ function UpdateCategory({ category, item, onSubmit, onCancel, onClose }) {
           onClick={handleCancel}
           className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
         >
-                  <FontAwesomeIcon icon={faTimes} className="text-gray-500 mr-1" />  Cancel
-               
+          <FontAwesomeIcon icon={faTimes} className="text-gray-500 mr-1" />  Cancel
         </button>
         <button
           type="submit"

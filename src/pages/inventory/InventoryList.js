@@ -62,7 +62,7 @@ const navigate = useNavigate();
     }
   
     axios
-      .post("https://men4u.xyz/common_api/inventory_listview", 
+      .post("https://menusmitra.xyz/common_api/inventory_listview", 
         { outlet_id: outlet_id },
         {
           headers: {
@@ -140,7 +140,7 @@ const navigate = useNavigate();
     };
   
     axios
-      .post("https://men4u.xyz/common_api/inventory_create", data, {
+      .post("https://menusmitra.xyz/common_api/inventory_create", data, {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Add Authorization header with token
         },
@@ -189,7 +189,7 @@ const navigate = useNavigate();
     setSelectedInventory(item);
   
     axios
-      .post("https://men4u.xyz/common_api/inventory_view", {
+      .post("https://menusmitra.xyz/common_api/inventory_view", {
         outlet_id: outlet_id,
         inventory_id: item.inventory_id,
       }, {
@@ -229,7 +229,7 @@ const navigate = useNavigate();
   
     // Make API call to update inventory
     axios
-      .post("https://men4u.xyz/common_api/inventory_update", {
+      .post("https://menusmitra.xyz/common_api/inventory_update", {
         inventory_id: updatedItem.inventory_id,
         supplier_id: updatedItem.supplier_id,
         outlet_id: updatedItem.outlet_id,
@@ -297,7 +297,7 @@ const navigate = useNavigate();
   
     axios
       .post(
-        "https://men4u.xyz/common_api/inventory_view",
+        "https://menusmitra.xyz/common_api/inventory_view",
         {
           outlet_id: outlet_id,
           inventory_id: item.inventory_id,
@@ -339,7 +339,7 @@ const navigate = useNavigate();
   
     try {
       const response = await axios.post(
-        'https://men4u.xyz/common_api/inventory_delete',
+        'https://menusmitra.xyz/common_api/inventory_delete',
         {
           inventory_id: inventoryToDelete.inventory_id,
           outlet_id: outlet_id,
@@ -379,7 +379,7 @@ const navigate = useNavigate();
     if (newCategory) {
       try {
         const response = await axios.post(
-          'https://men4u.xyz/common_api/inventory_category_create',
+          'https://menusmitra.xyz/common_api/inventory_category_create',
           {
             name: newCategory,
           },

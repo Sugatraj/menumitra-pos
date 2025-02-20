@@ -140,7 +140,7 @@ function OrderList() {
     setLoading(true);  // Start loading before making the request
   
     try {
-      const response = await fetch('https://men4u.xyz/common_api/get_all_menu_list_by_category', {
+      const response = await fetch('https://menusmitra.xyz/common_api/get_all_menu_list_by_category', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -411,7 +411,7 @@ function OrderList() {
       };
 
       // Send the request to create the order
-      const response = await axios.post('https://men4u.xyz/common_api/create_order', orderData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/create_order', orderData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,  // Send the access token for authorization
         }
@@ -484,7 +484,7 @@ function OrderList() {
       };
   
       // Send the request to create the order
-      const response = await axios.post('https://men4u.xyz/common_api/create_order', orderData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/create_order', orderData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Send the access token for authorization
         }
@@ -540,7 +540,7 @@ function OrderList() {
         user_id: user_id
       };
   
-      const response = await axios.post('https://men4u.xyz/common_api/update_order_status', updateData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/update_order_status', updateData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
         }
@@ -593,7 +593,7 @@ function OrderList() {
       };
 
       // Send the request to create the order
-      const response = await axios.post('https://men4u.xyz/common_api/create_order', orderData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/create_order', orderData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,  // Send the access token for authorization
         }
@@ -643,7 +643,7 @@ function OrderList() {
         return;
       }
   
-      const viewResponse = await axios.post('https://men4u.xyz/common_api/order_view', 
+      const viewResponse = await axios.post('https://menusmitra.xyz/common_api/order_view', 
         { order_number: orderNumber },
         {
           headers: {
@@ -1017,7 +1017,7 @@ function OrderList() {
         return;
       }
   
-      const viewResponsePrint = await axios.post('https://men4u.xyz/common_api/order_view', 
+      const viewResponsePrint = await axios.post('https://menusmitra.xyz/common_api/order_view', 
         { order_number: orderNumber },
         {
           headers: {
@@ -1324,7 +1324,7 @@ function OrderList() {
       };
 
       const response = await axios.post(
-        'https://men4u.xyz/common_api/update_order', 
+        'https://menusmitra.xyz/common_api/update_order', 
         updateOrderData,  // The body of the request
         {
           headers: {
@@ -1380,13 +1380,13 @@ function OrderList() {
           order_items: orderItems
         };
   
-        const updateOrderResponse = await axios.post('https://men4u.xyz/common_api/update_order', updateOrderData, {
+        const updateOrderResponse = await axios.post('https://menusmitra.xyz/common_api/update_order', updateOrderData, {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
   
         if (updateOrderResponse.data.st === 1) {
           // Step 2: Update Order Status
-          const updateOrderStatusResponse = await axios.post('https://men4u.xyz/common_api/update_order_status', {
+          const updateOrderStatusResponse = await axios.post('https://menusmitra.xyz/common_api/update_order_status', {
             outlet_id: outlet_id,
             order_id: order_id.toString(),
             order_status: "paid",
@@ -1430,7 +1430,7 @@ function OrderList() {
           })
         };
   
-        const createOrderResponse = await axios.post('https://men4u.xyz/common_api/create_order', orderData, {
+        const createOrderResponse = await axios.post('https://menusmitra.xyz/common_api/create_order', orderData, {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
   
@@ -1485,7 +1485,7 @@ function OrderList() {
         order_items: orderItems
       };
 
-      const response = await axios.post('https://men4u.xyz/common_api/update_order', updateOrderData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/update_order', updateOrderData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`  // Add the access token in the request header
         }
@@ -1542,7 +1542,7 @@ function OrderList() {
       };
   
       // First API call to update the order
-      const response = await axios.post('https://men4u.xyz/common_api/update_order', updateOrderData, {
+      const response = await axios.post('https://menusmitra.xyz/common_api/update_order', updateOrderData, {
         headers: {
           'Authorization': `Bearer ${accessToken}`  // Add the access token in the request header
         }
@@ -1560,7 +1560,7 @@ function OrderList() {
           user_id: user_id
         };
   
-        const statusResponse = await axios.post('https://men4u.xyz/common_api/update_order_status', updateOrderStatusData, {
+        const statusResponse = await axios.post('https://menusmitra.xyz/common_api/update_order_status', updateOrderStatusData, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
@@ -1626,7 +1626,7 @@ function OrderList() {
         navigate("/login"); // Redirect if token is missing
         return;
       }
-      const response = await axios.post('https://men4u.xyz/common_api/get_all_menu_list_by_category', {
+      const response = await axios.post('https://menusmitra.xyz/common_api/get_all_menu_list_by_category', {
         outlet_id: outlet_id,
         order_id: order_id
       }, {
@@ -1665,7 +1665,7 @@ function OrderList() {
         navigate("/login"); // Redirect if token is missing
         return;
       }
-      const response = await fetch('https://men4u.xyz/common_api/order_view', {
+      const response = await fetch('https://menusmitra.xyz/common_api/order_view', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
