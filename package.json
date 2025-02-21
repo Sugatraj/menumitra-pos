@@ -1,6 +1,6 @@
 {
   "name": "pos-outlet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
@@ -36,12 +36,12 @@
       "package.json",
       "public/**/*"
     ],
+    "npmRebuild": false,
+    "asar": true,
+    "asarUnpack": "**/*.{node,dll}",
     "win": {
       "target": "nsis",
-      "icon": "build/icon.ico",
-      "asar": true,
-      "asarUnpack": "**\\*.{node,dll}",
-      "npmRebuild": false
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
