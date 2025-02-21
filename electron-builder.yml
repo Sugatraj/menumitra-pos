@@ -2,16 +2,14 @@ appId: com.menumitra.pos
 productName: MenuMitra POS
 directories:
   output: dist
-  buildResources: public
 files:
-  - 'build/**/*'
+  - from: build
+    to: build
+  - package.json
+  - public/electron.js
+  - public/preload.js
 win:
   target: nsis
-  icon: public/icon.ico
-  sign: false
-  signAndEditExecutable: false
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
-  createDesktopShortcut: true
-  createStartMenuShortcut: true

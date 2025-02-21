@@ -20,49 +20,20 @@
     "pack": "electron-builder --dir",
     "publish": "electron-builder --publish always",
     "build-unsigned": "npm run build && electron-builder --win --x64 --config electron-builder.yml",
-    "make-release": "npm run build && electron-builder --win --x64 --config.win.sign=false --publish never"
+    "make-release": "npm run build && electron-builder --win --x64 --config.win.sign=false --publish never",
+    "build-simple": "npm run build && electron-builder --win --x64 --dir --config electron-builder.yml"
   },
   "build": {
     "appId": "com.menumitra.pos",
     "productName": "MenuMitra POS",
-    "publish": {
-      "provider": "github",
-      "owner": "Sugatraj",
-      "repo": "menumitra-pos",
-      "private": true,
-      "token": "%GH_TOKEN%"
-    },
     "directories": {
-      "output": "dist",
-      "buildResources": "public"
+      "output": "dist"
     },
     "files": [
       "build/**/*",
-      "node_modules/**/*",
-      "package.json",
-      "public/electron.js",
-      "public/preload.js",
-      "public/icon.ico"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        }
-      ],
-      "icon": "public/icon.ico",
-      "sign": false,
-      "signAndEditExecutable": false
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "installerIcon": "public/icon.ico",
-      "uninstallerIcon": "public/icon.ico"
-    }
+      "public/**/*",
+      "package.json"
+    ]
   },
   "homepage": "./",
   "dependencies": {
