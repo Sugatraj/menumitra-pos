@@ -20,7 +20,8 @@
     "release-unsigned": "electron-builder --win --x64 --publish always --config.win.signAndEditExecutable=false",
     "dist": "npm run build && electron-builder --win --x64 --dir",
     "pack": "electron-builder --dir",
-    "dist:dir": "npm run build && npm run pack"
+    "dist:dir": "npm run build && npm run pack",
+    "build-win": "npm run build && electron-builder --win --x64 --dir --config.asar=true --config.win.signAndEditExecutable=false --config.npmRebuild=false"
   },
   "build": {
     "appId": "com.menumitra.pos",
@@ -37,7 +38,10 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "build/icon.ico"
+      "icon": "build/icon.ico",
+      "asar": true,
+      "asarUnpack": "**\\*.{node,dll}",
+      "npmRebuild": false
     },
     "nsis": {
       "oneClick": false,
