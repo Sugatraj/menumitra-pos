@@ -8,16 +8,20 @@ files:
   - 'node_modules/**/*'
   - 'package.json'
   - 'public/**/*'
-electronVersion: 24.8.8
 asar: true
 asarUnpack: "**/*.{node,dll}"
 win:
-  target: nsis
-  icon: build/icon.ico
+  target: 
+    - target: nsis
+      arch: [x64]
+  icon: public/icon.ico
+  sign: null
   signAndEditExecutable: false
-  sign: false
+  certificateFile: null
+  certificatePassword: null
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
+  artifactName: ${productName}-Setup-${version}.${ext}
