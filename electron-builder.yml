@@ -1,26 +1,22 @@
 appId: com.menumitra.pos
 productName: MenuMitra POS
+main: "public/electron.js"
 directories:
   output: dist
   buildResources: public
 files:
-  - 'build/**/*'
-  - 'node_modules/**/*'
-  - 'package.json'
-  - 'public/electron.js'
-  - 'public/preload.js'
-  - 'public/icon.ico'
+  - "build/**/*"
+  - "node_modules/**/*"
+  - "package.json"
+  - "public/electron.js"
+  - "public/preload.js"
+  - "public/icon.ico"
+electronVersion: 24.8.8
 win:
-  target: 
-    - target: nsis
-      arch: 
-        - x64
+  target: nsis
   icon: build/icon.ico
-  sign: false
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
-  installerIcon: public/icon.ico
-  uninstallerIcon: public/icon.ico
