@@ -5,23 +5,13 @@ directories:
   buildResources: public
 files:
   - 'build/**/*'
-  - 'node_modules/**/*'
-  - 'package.json'
-  - 'public/**/*'
-asar: true
-asarUnpack: "**/*.{node,dll}"
 win:
-  target: 
-    - target: nsis
-      arch: [x64]
+  target: nsis
   icon: public/icon.ico
-  sign: null
+  sign: false
   signAndEditExecutable: false
-  certificateFile: null
-  certificatePassword: null
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
-  artifactName: ${productName}-Setup-${version}.${ext}
