@@ -40,13 +40,13 @@ const feedURL = {
 };
 
 // Update the configurations
-const updateConfig = {
-  provider: 'github',
-  owner: 'Sugatraj',
-  repo: 'menumitra-pos',
-  private: true,
-  releaseType: 'release'
-};
+// const updateConfig = {
+//   provider: 'github',
+//   owner: 'Sugatraj',
+//   repo: 'menumitra-pos',
+//   private: true,
+//   releaseType: 'release'
+// };
 
 // Update the auto-updater configuration
 autoUpdater.setFeedURL({
@@ -61,6 +61,23 @@ autoUpdater.setFeedURL({
 // Add detailed logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'debug';
+
+// Configure auto-updater
+autoUpdater.autoDownload = true;
+autoUpdater.allowDowngrade = false;
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'debug';
+
+// Update the feed URL configuration
+const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+const updateConfig = {
+  provider: 'github',
+  repo: 'menumitra-pos',
+  owner: 'Sugatraj',
+  private: true,
+  token: GH_TOKEN,
+  updateConfigPath: path.join(app.getPath('userData'), 'update.json')
+};
 
 let mainWindow;
 
@@ -187,6 +204,28 @@ function createWindow() {
     setInterval(checkForUpdates, 5 * 60 * 1000);
   }
 
+  if (!isDev) {
+    try {
+      autoUpdater.setFeedURL(updateConfig);
+      log.info('Update feed URL configured:', { ...updateConfig, token: '***' });
+
+      const checkForUpdates = async () => {
+        try {
+          const result = await autoUpdater.checkForUpdates();
+          log.info('Update check result:', result);
+        } catch (error) {
+          log.error('Update check error:', error);
+          mainWindow?.webContents.send('update-error', error.message);
+        }
+      };
+
+      // Initial check
+      setTimeout(checkForUpdates, 3000);
+    } catch (error) {
+      log.error('Error configuring updater:', error);
+    }
+  }
+
   mainWindow.on('closed', () => {
     app.quit();
   });
@@ -299,5 +338,15 @@ autoUpdater.on('error', (error) => {
     mainWindow?.webContents.send('update-error', 'No releases found. Please create a release on GitHub.');
   } else {
     mainWindow?.webContents.send('update-error', error.message);
+  }
+});
+
+autoUpdater.on('error', (error) => {
+  log.error('Update error:', error);
+  mainWindow?.webContents.send('update-error', error.toString());
+  
+  if (error.message.includes('404')) {
+    log.info('No releases found or access denied');
+    mainWindow?.webContents.send('update-message', 'No updates available');
   }
 });

@@ -34,15 +34,14 @@
       "public/**/*",
       "package.json"
     ],
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "Sugatraj",
-        "repo": "menumitra-pos",
-        "private": true,
-        "releaseType": "release"
-      }
-    ],
+    "publish": {
+      "provider": "github",
+      "owner": "Sugatraj",
+      "repo": "menumitra-pos",
+      "private": true,
+      "vPrefixedTagName": true,
+      "releaseType": "release"
+    },
     "win": {
       "target": [
         "nsis"
