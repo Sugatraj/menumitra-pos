@@ -5,33 +5,46 @@ function AutoUpdater() {
   const [updateReady, setUpdateReady] = useState(false);
 
   useEffect(() => {
-    if (!window.electron) return;
+    const api = window.electronAPI;
+    if (!api) return;
 
-    // Check for updates when component mounts
-    window.electron.checkForUpdates();
-
-    window.electron.onUpdateMessage((_, message) => {
+    api.onUpdateMessage((_event, message) => {
       setUpdateStatus(message);
+      console.log('Update message:', message);
     });
 
-    window.electron.onUpdateAvailable((_, info) => {
-      setUpdateStatus(`New version ${info.version} available. Downloading...`);
-      window.electron.downloadUpdate();
+    api.onUpdateAvailable((_event, info) => {
+      setUpdateStatus(`New version ${info.version} available and downloading...`);
+      console.log('Update available:', info);
     });
 
-    window.electron.onUpdateDownloaded(() => {
-      setUpdateStatus('Update downloaded. Ready to install.');
+    api.onUpdateDownloaded(() => {
+      setUpdateStatus('Update ready to install!');
       setUpdateReady(true);
+      console.log('Update downloaded and ready');
     });
 
-    window.electron.onUpdateError((_, error) => {
-      setUpdateStatus(`Error: ${error}`);
-    });
+    // Initial check
+    api.checkForUpdates().catch(console.error);
+
+    return () => {
+      api.removeListener('update-message');
+      api.removeListener('update-available');
+      api.removeListener('update-downloaded');
+    };
   }, []);
 
   const installUpdate = () => {
-    if (window.electron) {
-      window.electron.startUpdate();
+    const api = window.electronAPI;
+    if (api) {
+      api.startUpdate();
+    }
+  };
+
+  const checkForUpdates = () => {
+    const api = window.electronAPI;
+    if (api) {
+      api.checkForUpdates().catch(console.error);
     }
   };
 
@@ -39,6 +52,12 @@ function AutoUpdater() {
 
   return (
     <div className="fixed bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg z-50">
+      <button 
+        onClick={checkForUpdates}
+        className="mb-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+      >
+        Check for Updates
+      </button>
       <p className="text-gray-700">{updateStatus}</p>
       {updateReady && (
         <button

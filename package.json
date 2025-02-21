@@ -1,6 +1,6 @@
 {
   "name": "pos-outlet",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
@@ -11,21 +11,25 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
-"electron:build": "npm run build && electron-builder --win --x64 --win.sign=false",
+    "electron:build": "npm run build && electron-builder --win --x64",
     "electron:start": "wait-on tcp:3000 && electron .",
     "make-installer": "npm run clean && npm run build && electron-builder --win nsis",
     "clean": "rimraf build dist",
-    "release": "electron-builder build --win --x64 --publish never",
-    "publish": "electron-builder --win --x64 --publish always",
-    "release-unsigned": "electron-builder --win --x64 --publish always --config.win.signAndEditExecutable=false",
-    "dist": "npm run build && electron-builder --win --x64 --dir",
+    "release": "npm run build && electron-builder build --win --x64 --publish always",
+    "dist": "npm run build && electron-builder --win --x64",
     "pack": "electron-builder --dir",
-    "dist:dir": "npm run build && npm run pack",
-    "build-win": "npm run build && electron-builder --win --x64 --dir --config.asar=true --config.win.signAndEditExecutable=false --config.npmRebuild=false"
+    "publish": "electron-builder --publish always"
   },
   "build": {
     "appId": "com.menumitra.pos",
     "productName": "MenuMitra POS",
+    "publish": {
+      "provider": "github",
+      "owner": "Sugatraj",
+      "repo": "menumitra-pos",
+      "private": true,
+      "token": "%GH_TOKEN%"
+    },
     "directories": {
       "output": "dist",
       "buildResources": "public"
@@ -34,14 +38,20 @@
       "build/**/*",
       "node_modules/**/*",
       "package.json",
-      "public/**/*"
+      "public/electron.js",
+      "public/preload.js",
+      "public/icon.ico"
     ],
-    "npmRebuild": false,
-    "asar": true,
-    "asarUnpack": "**/*.{node,dll}",
     "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -49,21 +59,16 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "installerIcon": "public/icon.ico",
-      "uninstallerIcon": "public/icon.ico",
-      "allowElevation": true,
-      "perMachine": false,
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "uninstallerIcon": "public/icon.ico"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Sugatraj/menumitra-pos.git"
-  },
+  "homepage": "./",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "axios": "^1.7.9",
     "core-js": "^3.39.0",
     "electron-is-dev": "^2.0.0",
     "electron-log": "^5.3.0",

@@ -41,10 +41,10 @@ function createWindow() {
     icon: path.join(__dirname, 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
+      enableRemoteModule: true,
       preload: path.join(__dirname, 'preload.js'),
-      sandbox: false,
-      partition: 'persist:mainwindow'
+      webSecurity: false
     }
   });
 
@@ -52,7 +52,8 @@ function createWindow() {
   if (isDev) {
     mainWindow.loadURL('http://localhost:3000');
   } else {
-    mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+    // Fix the path to load index.html
+    mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
   }
 
   if (isDev) {
@@ -61,8 +62,35 @@ function createWindow() {
 
   // Initialize auto-updater with the correct feed URL
   if (!isDev) {
-    autoUpdater.setFeedURL(feedURL); // Set the feed URL to the repository's release URL
-    autoUpdater.checkForUpdatesAndNotify(); // Check for updates on launch
+    const token = process.env.GH_TOKEN;
+    if (!token) {
+      log.error('GitHub token not found!');
+    } else {
+      autoUpdater.setFeedURL(feedURL);
+      autoUpdater.checkForUpdates()
+        .then(updateCheckResult => {
+          log.info('Update check result:', updateCheckResult);
+        })
+        .catch(error => {
+          log.error('Update check error:', error);
+        });
+    }
+  }
+
+  // Check for updates immediately after window creation
+  if (!isDev) {
+    setTimeout(() => {
+      autoUpdater.checkForUpdates().catch(err => {
+        log.error('Update check failed:', err);
+      });
+    }, 3000); // Check after 3 seconds
+
+    // Check for updates every 30 minutes
+    setInterval(() => {
+      autoUpdater.checkForUpdates().catch(err => {
+        log.error('Update check failed:', err);
+      });
+    }, 30 * 60 * 1000);
   }
 
   mainWindow.on('closed', () => {
@@ -82,6 +110,10 @@ autoUpdater.on('update-available', (info) => {
   if (info.version > currentVersion) {
     mainWindow?.webContents.send('update-available', info);
   }
+  // Auto download the update
+  autoUpdater.downloadUpdate().catch(err => {
+    log.error('Download failed:', err);
+  });
 });
 
 autoUpdater.on('update-not-available', () => {
@@ -94,6 +126,8 @@ autoUpdater.on('error', (err) => {
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
+  let message = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
+  log.info(message);
   mainWindow?.webContents.send('download-progress', progressObj);
 });
 
@@ -116,6 +150,12 @@ ipcMain.handle('start-update', () => {
 });
 
 app.whenReady().then(() => {
+  // Register file protocol handler
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const filePath = request.url.replace('file:///', '');
+    callback(decodeURI(path.normalize(`${__dirname}/../${filePath}`)));
+  });
+
   createWindow();
 });
 
