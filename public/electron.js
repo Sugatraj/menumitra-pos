@@ -39,6 +39,15 @@ const feedURL = {
   token: token
 };
 
+// Update the configurations
+const updateConfig = {
+  provider: 'github',
+  owner: 'Sugatraj',
+  repo: 'menumitra-pos',
+  private: true,
+  releaseType: 'release'
+};
+
 let mainWindow;
 
 function createWindow() {
@@ -106,6 +115,23 @@ function createWindow() {
   }
 
   if (!isDev) {
+    // Configure auto-updater
+    autoUpdater.setFeedURL(updateConfig);
+    log.info('Update feed URL set:', updateConfig);
+    
+    // Check updates with more detailed logging
+    autoUpdater.checkForUpdates()
+      .then(updateCheckResult => {
+        log.info('Update check result:', updateCheckResult);
+        if (updateCheckResult?.updateInfo) {
+          log.info('Update info:', updateCheckResult.updateInfo);
+        }
+      })
+      .catch(error => {
+        log.error('Update check error:', error);
+        log.error('Error details:', error?.stack || 'No stack trace');
+      });
+
     // Check for updates immediately
     autoUpdater.checkForUpdates().then((updateCheckResult) => {
       log.info('Initial update check result:', updateCheckResult);
@@ -149,9 +175,13 @@ autoUpdater.on('update-not-available', () => {
   mainWindow?.webContents.send('update-not-available');
 });
 
-autoUpdater.on('error', (err) => {
-  log.error('AutoUpdater error:', err);
-  mainWindow?.webContents.send('update-error', err.message);
+autoUpdater.on('error', (error) => {
+  log.error('AutoUpdater error:', error);
+  log.error('Error details:', error?.stack || 'No stack trace');
+  mainWindow?.webContents.send('update-error', {
+    message: error.message,
+    details: error?.stack
+  });
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
