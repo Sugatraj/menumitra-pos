@@ -1,10 +1,10 @@
 {
   "name": "pos-outlet",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
-  "author": "Devloper",
+  "author": "Developer",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -48,9 +48,7 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ],
       "icon": "public/icon.ico",
