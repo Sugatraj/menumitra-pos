@@ -18,7 +18,9 @@
     "release": "npm run build && electron-builder build --win --x64 --publish always",
     "dist": "npm run build && electron-builder --win --x64",
     "pack": "electron-builder --dir",
-    "publish": "electron-builder --publish always"
+    "publish": "electron-builder --publish always",
+    "build-unsigned": "npm run build && electron-builder --win --x64 --config.win.sign=false --config.win.signAndEditExecutable=false",
+    "make-release": "npm run build && electron-builder --win --x64 --config.win.sign=false --publish never"
   },
   "build": {
     "appId": "com.menumitra.pos",
@@ -51,7 +53,9 @@
           ]
         }
       ],
-      "icon": "public/icon.ico"
+      "icon": "public/icon.ico",
+      "sign": false,
+      "signAndEditExecutable": false
     },
     "nsis": {
       "oneClick": false,

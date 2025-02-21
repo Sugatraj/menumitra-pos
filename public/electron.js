@@ -15,15 +15,28 @@ if (!gotTheLock) {
 // Configure logging
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
-autoUpdater.autoDownload = false;
+autoUpdater.autoDownload = true; // Change to true for automatic downloads
+autoUpdater.autoInstallOnAppQuit = false; // Don't install automatically on quit
 
 const server = 'https://Shekru-Labs-India/menumitra_pos/releases/download'; // Your repository URL
+
+// Update token handling
+const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+if (!token) {
+  log.error('GitHub token not found in environment variables!');
+} else {
+  log.info('GitHub token found');
+  autoUpdater.requestHeaders = {
+    'Authorization': `token ${token}`
+  };
+}
+
 const feedURL = {
   provider: 'github',
   owner: 'Sugatraj',
   repo: 'menumitra-pos',
   private: true,
-  token: process.env.GH_TOKEN
+  token: token
 };
 
 let mainWindow;
@@ -62,7 +75,6 @@ function createWindow() {
 
   // Initialize auto-updater with the correct feed URL
   if (!isDev) {
-    const token = process.env.GH_TOKEN;
     if (!token) {
       log.error('GitHub token not found!');
     } else {
@@ -93,6 +105,20 @@ function createWindow() {
     }, 30 * 60 * 1000);
   }
 
+  if (!isDev) {
+    // Check for updates immediately
+    autoUpdater.checkForUpdates().then((updateCheckResult) => {
+      log.info('Initial update check result:', updateCheckResult);
+    }).catch((error) => {
+      log.error('Update check error:', error);
+    });
+
+    // Check for updates every 5 minutes
+    setInterval(() => {
+      autoUpdater.checkForUpdates();
+    }, 5 * 60 * 1000);
+  }
+
   mainWindow.on('closed', () => {
     app.quit();
   });
@@ -108,7 +134,10 @@ autoUpdater.on('update-available', (info) => {
   log.info('Update available:', info);
   const currentVersion = app.getVersion();
   if (info.version > currentVersion) {
-    mainWindow?.webContents.send('update-available', info);
+    mainWindow?.webContents.send('update-available', {
+      version: info.version,
+      releaseNotes: info.releaseNotes
+    });
   }
   // Auto download the update
   autoUpdater.downloadUpdate().catch(err => {
@@ -133,7 +162,17 @@ autoUpdater.on('download-progress', (progressObj) => {
 
 autoUpdater.on('update-downloaded', (info) => {
   log.info('Update downloaded:', info);
-  mainWindow?.webContents.send('update-downloaded');
+  mainWindow?.webContents.send('update-downloaded', {
+    version: info.version,
+    releaseNotes: info.releaseNotes
+  });
+  
+  // Notify user that update is ready
+  const notification = new Notification({
+    title: 'Update Ready',
+    body: `Version ${info.version} is ready to install`
+  });
+  notification.show();
 });
 
 // IPC handlers
