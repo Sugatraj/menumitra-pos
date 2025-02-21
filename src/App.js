@@ -163,8 +163,8 @@ function App() {
             <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
         {/* </NetworkDetector> */}
+        <AutoUpdater />
       </Router>
-      <AutoUpdater />
       <UpdateNotification />
     </ThemeProvider>
   );
