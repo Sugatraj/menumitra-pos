@@ -1,6 +1,6 @@
 {
   "name": "pos-outlet",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
@@ -11,7 +11,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
-    "electron:build": "npm run build && electron-builder --win --x64 --config.win.sign=false",
+"electron:build": "npm run build && electron-builder --win --x64 --win.sign=false",
     "electron:start": "wait-on tcp:3000 && electron .",
     "make-installer": "npm run clean && npm run build && electron-builder --win nsis",
     "clean": "rimraf build dist",
