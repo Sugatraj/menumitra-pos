@@ -11,7 +11,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
-    "electron:build": "npm run build && electron-builder --win --x64",
+    "electron:build": "npm run build && electron-builder --win --x64 --config.win.sign=false",
     "electron:start": "wait-on tcp:3000 && electron .",
     "make-installer": "npm run clean && npm run build && electron-builder --win nsis",
     "clean": "rimraf build dist",
@@ -48,7 +48,9 @@
       }],
       "icon": "build/icon.ico",
       "artifactName": "${productName}-Setup-${version}.${ext}",
-      "sign": false
+      "sign": false,
+      "signAndEditExecutable": false,
+      "signingHashAlgorithms": null
     },
     "nsis": {
       "oneClick": false,
@@ -58,7 +60,8 @@
       "installerIcon": "public/icon.ico",
       "uninstallerIcon": "public/icon.ico",
       "allowElevation": true,
-      "perMachine": false
+      "perMachine": false,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     }
   },
   "repository": {

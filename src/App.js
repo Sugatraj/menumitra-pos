@@ -30,6 +30,7 @@ import { VAPID_KEY } from './config';
 import ChefList from './pages/chef/ChefList';
 import Support from './components/Support';
 import UpdateNotification from './components/UpdateNotification';
+import AutoUpdater from './components/AutoUpdater';
 
 
 
@@ -163,6 +164,7 @@ function App() {
           </Routes>
         {/* </NetworkDetector> */}
       </Router>
+      <AutoUpdater />
       <UpdateNotification />
     </ThemeProvider>
   );
