@@ -28,19 +28,31 @@ function AutoUpdater() {
       console.log('Update downloaded:', info);
     });
 
-    // Check for updates every 5 minutes
-    const checkInterval = setInterval(() => {
-      api.checkForUpdates().catch(console.error);
-    }, 5 * 60 * 1000);
+    api.onUpdateError((_event, error) => {
+      setUpdateStatus(`Update error: ${error}`);
+      console.error('Update error:', error);
+    });
+
+    // Check for updates with error handling
+    const checkForUpdates = () => {
+      api.checkForUpdates().catch(error => {
+        console.error('Check for updates failed:', error);
+        setUpdateStatus('Failed to check for updates');
+      });
+    };
 
     // Initial check
-    api.checkForUpdates().catch(console.error);
+    checkForUpdates();
+
+    // Periodic check
+    const interval = setInterval(checkForUpdates, 5 * 60 * 1000);
 
     return () => {
-      clearInterval(checkInterval);
+      clearInterval(interval);
       api.removeListener('update-message');
       api.removeListener('update-available');
       api.removeListener('update-downloaded');
+      api.removeListener('update-error');
     };
   }, []);
 

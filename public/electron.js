@@ -48,6 +48,20 @@ const updateConfig = {
   releaseType: 'release'
 };
 
+// Update the auto-updater configuration
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'Sugatraj',
+  repo: 'menumitra-pos',
+  private: true,
+  releaseType: ['release', 'prerelease'],
+  url: 'https://github.com/Sugatraj/menumitra-pos/releases/latest'
+});
+
+// Add detailed logging
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'debug';
+
 let mainWindow;
 
 function createWindow() {
@@ -143,6 +157,34 @@ function createWindow() {
     setInterval(() => {
       autoUpdater.checkForUpdates();
     }, 5 * 60 * 1000);
+  }
+
+  if (!isDev) {
+    // Check for updates with error handling
+    const checkForUpdates = async () => {
+      try {
+        log.info('Checking for updates...');
+        const result = await autoUpdater.checkForUpdates();
+        log.info('Update check result:', result);
+        
+        if (result?.updateInfo) {
+          const { version, releaseDate } = result.updateInfo;
+          log.info(`Update found: ${version} (${releaseDate})`);
+          mainWindow?.webContents.send('update-available', result.updateInfo);
+        }
+      } catch (error) {
+        log.error('Update check failed:', error);
+        if (error.code === 404) {
+          log.info('No releases found. Create a release on GitHub first.');
+        }
+      }
+    };
+
+    // Initial check after delay
+    setTimeout(checkForUpdates, 3000);
+
+    // Periodic check
+    setInterval(checkForUpdates, 5 * 60 * 1000);
   }
 
   mainWindow.on('closed', () => {
@@ -247,5 +289,15 @@ app.on('second-instance', () => {
       windows[0].restore();
     }
     windows[0].focus();
+  }
+});
+
+// Update error handling
+autoUpdater.on('error', (error) => {
+  log.error('Update error:', error);
+  if (error.code === 404) {
+    mainWindow?.webContents.send('update-error', 'No releases found. Please create a release on GitHub.');
+  } else {
+    mainWindow?.webContents.send('update-error', error.message);
   }
 });
