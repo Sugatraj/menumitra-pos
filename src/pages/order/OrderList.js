@@ -1817,7 +1817,8 @@ const handleBackClick = () => {
         <div className="grid grid-cols-12 gap-4">
           
           {/* Left Sidebar - Categories */}
-          <div className="col-span-2 rounded-lg bg-white shadow-lg overflow-hidden">
+          <div   className="col-span-2 rounded-lg bg-white shadow-lg overflow-auto"
+          >
             {/* Order Type and Table Info */}
 
             <div className="p-2 border-b border-gray-200 bg-white ">
@@ -1889,7 +1890,8 @@ const handleBackClick = () => {
 
             </div>
             {/* Categories List */}
-            <div className="p-2 ">
+            <div className="p-2 "   style={{ maxHeight: "70vh", maxWidth: "100%", overflowX: "auto" }}
+            >
               {categories.map((category) => (
                 <button
                   key={category.id}
@@ -1951,7 +1953,8 @@ const handleBackClick = () => {
 <hr />
 
 {/* Menu Items Grid */}
-<div className="grid grid-cols-4 gap-2 p-1">
+<div className="grid grid-cols-4 gap-2 p-1"  style={{ maxHeight: "70vh", maxWidth: "100%", overflowX: "auto" }}
+>
   {searchQuery
     ? // If searching, display all matching items across categories
       categories
@@ -2005,7 +2008,7 @@ const handleBackClick = () => {
           </div>
 
 
-          <div className="col-span-4 bg-white border-l rounded-lg shadow-lg flex flex-col">
+          <div className="col-span-4 bg-white border-l rounded-lg shadow-lg flex flex-col overflow-auto overflow-y-auto">
             {/* Guest Information */}
             {/* <div className="p-2 border-b flex items-center space-x-2">
             
@@ -2037,7 +2040,8 @@ const handleBackClick = () => {
             </div> */}
 
             {/* Order Items */}
-            <div className="flex-1 overflow-auto overflow-y-auto">
+            <div className="flex-1 overflow-auto"   style={{ maxHeight: "70vh", maxWidth: "100%", overflowX: "auto" }}
+            >
               <div className="p-2">
                 <table className="w-full">
                   <thead className='border-b border-gray-200'>

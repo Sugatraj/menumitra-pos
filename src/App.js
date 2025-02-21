@@ -29,10 +29,28 @@ import { getToken } from 'firebase/messaging';
 import { VAPID_KEY } from './config';
 import ChefList from './pages/chef/ChefList';
 import Support from './components/Support';
+import UpdateNotification from './components/UpdateNotification';
 
 
 
 function App() {
+  useEffect(() => {
+    // Check for updates when app starts
+    if (window.electron) {
+      window.electron.checkForUpdates();
+
+      window.electron.onUpdateAvailable((event, info) => {
+        console.log('Update available:', info);
+        window.electron.downloadUpdate();
+      });
+
+      window.electron.onUpdateDownloaded((event, info) => {
+        console.log('Update downloaded:', info);
+        // Automatically restart and install
+        window.electron.startUpdate();
+      });
+    }
+  }, []);
 
 
   // const [fcmToken, setFcmToken] = useState(null);
@@ -145,6 +163,7 @@ function App() {
           </Routes>
         {/* </NetworkDetector> */}
       </Router>
+      <UpdateNotification />
     </ThemeProvider>
   );
 }

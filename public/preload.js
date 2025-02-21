@@ -18,14 +18,13 @@ contextBridge.exposeInMainWorld(
   }
 );
 
-contextBridge.exposeInMainWorld('updater', {
-  checkUpdate: () => ipcRenderer.invoke('check-update'),
+contextBridge.exposeInMainWorld('electron', {
+  checkForUpdates: () => ipcRenderer.invoke('check-update'),
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
   startUpdate: () => ipcRenderer.invoke('start-update'),
-  onUpdateMessage: (callback) => ipcRenderer.on('update-message', (_, message) => callback(message)),
-  onUpdateAvailable: (callback) => ipcRenderer.on('update-available', (_, info) => callback(info)),
-  onUpdateNotAvailable: (callback) => ipcRenderer.on('update-not-available', () => callback()),
-  onDownloadProgress: (callback) => ipcRenderer.on('download-progress', (_, info) => callback(info)),
-  onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', () => callback()),
-  onUpdateError: (callback) => ipcRenderer.on('update-error', (_, message) => callback(message))
+  onUpdateMessage: (callback) => ipcRenderer.on('update-message', callback),
+  onUpdateAvailable: (callback) => ipcRenderer.on('update-available', callback),
+  onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', callback),
+  onUpdateError: (callback) => ipcRenderer.on('update-error', callback),
+  removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel)
 });
