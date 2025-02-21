@@ -319,7 +319,7 @@ localStorage.setItem('refresh',refresh)
             <div className="space-y-4">
   <div>
     <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">
-      <span className="text-red-500">*</span> Mobile Number
+      <span className="text-red-500">*</span> Mobile Numberrrrrrrr
     </label>
     <div className="relative">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
