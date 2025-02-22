@@ -76,8 +76,26 @@ const updateConfig = {
   owner: 'Sugatraj',
   private: true,
   token: GH_TOKEN,
-  updateConfigPath: path.join(app.getPath('userData'), 'update.json')
+  updateConfigPath: path.join(app.getPath('userData'), 'update.json'),
+  updaterCachePath: path.join(app.getPath('temp'), 'pos-outlet-updater'),
+  requestHeaders: { Accept: 'application/octet-stream' }
 };
+
+// Ensure update directory exists and is writable
+function ensureUpdateDirectory() {
+  const updatePath = path.join(app.getPath('temp'), 'pos-outlet-updater');
+  try {
+    if (!fs.existsSync(updatePath)) {
+      fs.mkdirSync(updatePath, { recursive: true });
+    }
+    fs.accessSync(updatePath, fs.constants.W_OK);
+    log.info('Update directory ready:', updatePath);
+    return true;
+  } catch (error) {
+    log.error('Update directory error:', error);
+    return false;
+  }
+}
 
 let mainWindow;
 
@@ -226,6 +244,20 @@ function createWindow() {
     }
   }
 
+  if (!isDev) {
+    if (ensureUpdateDirectory()) {
+      autoUpdater.setFeedURL(updateConfig);
+      autoUpdater.checkForUpdates()
+        .then(updateCheckResult => {
+          log.info('Update check result:', updateCheckResult);
+        })
+        .catch(error => {
+          log.error('Update check error:', error);
+          mainWindow?.webContents.send('update-error', error.message);
+        });
+    }
+  }
+
   mainWindow.on('closed', () => {
     app.quit();
   });
@@ -288,7 +320,22 @@ autoUpdater.on('update-downloaded', (info) => {
 
 // IPC handlers
 ipcMain.handle('check-update', async () => {
-  return await autoUpdater.checkForUpdates();
+  try {
+    if (!ensureUpdateDirectory()) {
+      throw new Error('Update directory not accessible');
+    }
+    const result = await autoUpdater.checkForUpdates();
+    // Return a simplified version of the update info
+    return {
+      updateAvailable: result?.updateInfo?.version !== app.getVersion(),
+      currentVersion: app.getVersion(),
+      newVersion: result?.updateInfo?.version,
+      releaseNotes: result?.updateInfo?.releaseNotes || ''
+    };
+  } catch (error) {
+    log.error('Check update error:', error);
+    throw new Error(error.message);
+  }
 });
 
 ipcMain.handle('download-update', async () => {
@@ -349,4 +396,37 @@ autoUpdater.on('error', (error) => {
     log.info('No releases found or access denied');
     mainWindow?.webContents.send('update-message', 'No updates available');
   }
+});
+
+// Update error handling with retry
+let updateRetryCount = 0;
+const MAX_RETRIES = 3;
+
+autoUpdater.on('error', (error) => {
+  log.error('Update error:', error);
+  
+  if (error.code === 'EPERM' && updateRetryCount < MAX_RETRIES) {
+    updateRetryCount++;
+    log.info(`Retrying update download (${updateRetryCount}/${MAX_RETRIES})...`);
+    setTimeout(() => {
+      autoUpdater.downloadUpdate().catch(err => {
+        log.error('Retry failed:', err);
+      });
+    }, 1000 * updateRetryCount);
+  } else {
+    mainWindow?.webContents.send('update-error', {
+      message: error.message,
+      details: error.stack
+    });
+  }
+});
+
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available:', info);
+  // Send only necessary update information
+  mainWindow?.webContents.send('update-available', {
+    version: info.version,
+    releaseNotes: info.releaseNotes || '',
+    releaseDate: info.releaseDate
+  });
 });

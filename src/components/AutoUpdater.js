@@ -16,9 +16,16 @@ function AutoUpdater() {
     });
 
     api.onUpdateAvailable((_event, info) => {
-      setUpdateStatus(`New version ${info.version} available. Downloading...`);
-      setNewVersion(info.version);
-      console.log('Update available:', info);
+      try {
+        setUpdateStatus(`New version ${info.version} available. Downloading...`);
+        setNewVersion(info.version);
+        console.log('Update available:', {
+          version: info.version,
+          notes: info.releaseNotes
+        });
+      } catch (error) {
+        console.error('Error handling update info:', error);
+      }
     });
 
     api.onUpdateDownloaded((_event, info) => {
@@ -34,11 +41,13 @@ function AutoUpdater() {
     });
 
     // Check for updates with error handling
-    const checkForUpdates = () => {
-      api.checkForUpdates().catch(error => {
-        console.error('Check for updates failed:', error);
-        setUpdateStatus('Failed to check for updates');
-      });
+    const checkForUpdates = async () => {
+      try {
+        await api.checkForUpdates();
+      } catch (error) {
+        console.error('Check for updates failed:', error.message);
+        setUpdateStatus('Update check failed');
+      }
     };
 
     // Initial check
