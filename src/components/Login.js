@@ -312,7 +312,7 @@ localStorage.setItem('refresh',refresh)
                 <img src={MenuMitra} alt="MenuMitra Logo" className="w-10 h-10 mr-2" /> Adjust logo size
                 <h1 className="text-2xl font-bold text-gray-800 ">MenuMitra pos</h1>
               </div>
-              <p className="text-gray-600">Sign in to continue to your account</p>
+              {/* <p className="text-gray-600">Sign in to continue to your account</p> */}
             </div>
 
             <form onSubmit={showOtpField ? handleVerifyOtp : handleSendOtp} className="space-y-6">
