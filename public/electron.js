@@ -15,8 +15,8 @@ if (!gotTheLock) {
 // Configure logging
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
-autoUpdater.autoDownload = true; // Change to true for automatic downloads
-autoUpdater.autoInstallOnAppQuit = false; // Don't install automatically on quit
+autoUpdater.autoDownload = false; // Let's control download manually
+autoUpdater.autoInstallOnAppQuit = true; // Change to true for automatic downloads
 
 const server = 'https://Shekru-Labs-India/menumitra_pos/releases/download'; // Your repository URL
 
@@ -40,56 +40,39 @@ const feedURL = {
 };
 
 // Update the configurations
-// const updateConfig = {
-//   provider: 'github',
-//   owner: 'Sugatraj',
-//   repo: 'menumitra-pos',
-//   private: true,
-//   releaseType: 'release'
-// };
-
-// Update the auto-updater configuration
-autoUpdater.setFeedURL({
+const updateConfig = {
   provider: 'github',
   owner: 'Sugatraj',
   repo: 'menumitra-pos',
   private: true,
-  releaseType: ['release', 'prerelease'],
-  url: 'https://github.com/Sugatraj/menumitra-pos/releases/latest'
-});
+  token: process.env.GH_TOKEN,
+  headers: {
+    'Authorization': `token ${process.env.GH_TOKEN}`
+  },
+  updateConfigPath: path.join(app.getPath('userData'), 'update.json')
+};
+
+// Configure auto-updater
+autoUpdater.logger = log;
+autoUpdater.autoDownload = true;
+autoUpdater.allowDowngrade = false;
+autoUpdater.setFeedURL(updateConfig);
 
 // Add detailed logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'debug';
 
-// Configure auto-updater
-autoUpdater.autoDownload = true;
-autoUpdater.allowDowngrade = false;
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'debug';
-
-// Update the feed URL configuration
-const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
-const updateConfig = {
-  provider: 'github',
-  repo: 'menumitra-pos',
-  owner: 'Sugatraj',
-  private: true,
-  token: GH_TOKEN,
-  updateConfigPath: path.join(app.getPath('userData'), 'update.json'),
-  updaterCachePath: path.join(app.getPath('temp'), 'pos-outlet-updater'),
-  requestHeaders: { Accept: 'application/octet-stream' }
-};
-
 // Ensure update directory exists and is writable
 function ensureUpdateDirectory() {
-  const updatePath = path.join(app.getPath('temp'), 'pos-outlet-updater');
+  const updatePath = path.join(app.getPath('userData'), 'updates');
   try {
     if (!fs.existsSync(updatePath)) {
-      fs.mkdirSync(updatePath, { recursive: true });
+      fs.mkdirSync(updatePath, { recursive: true, mode: 0o755 }); // Add proper permissions
     }
-    fs.accessSync(updatePath, fs.constants.W_OK);
-    log.info('Update directory ready:', updatePath);
+    // Test write permissions
+    const testFile = path.join(updatePath, '.test');
+    fs.writeFileSync(testFile, 'test');
+    fs.unlinkSync(testFile);
     return true;
   } catch (error) {
     log.error('Update directory error:', error);
@@ -164,83 +147,27 @@ function createWindow() {
   }
 
   if (!isDev) {
-    // Configure auto-updater
-    autoUpdater.setFeedURL(updateConfig);
-    log.info('Update feed URL set:', updateConfig);
-    
-    // Check updates with more detailed logging
-    autoUpdater.checkForUpdates()
-      .then(updateCheckResult => {
-        log.info('Update check result:', updateCheckResult);
-        if (updateCheckResult?.updateInfo) {
-          log.info('Update info:', updateCheckResult.updateInfo);
-        }
-      })
-      .catch(error => {
-        log.error('Update check error:', error);
-        log.error('Error details:', error?.stack || 'No stack trace');
-      });
-
-    // Check for updates immediately
-    autoUpdater.checkForUpdates().then((updateCheckResult) => {
-      log.info('Initial update check result:', updateCheckResult);
-    }).catch((error) => {
-      log.error('Update check error:', error);
-    });
-
-    // Check for updates every 5 minutes
-    setInterval(() => {
-      autoUpdater.checkForUpdates();
-    }, 5 * 60 * 1000);
-  }
-
-  if (!isDev) {
-    // Check for updates with error handling
-    const checkForUpdates = async () => {
-      try {
-        log.info('Checking for updates...');
-        const result = await autoUpdater.checkForUpdates();
-        log.info('Update check result:', result);
-        
-        if (result?.updateInfo) {
-          const { version, releaseDate } = result.updateInfo;
-          log.info(`Update found: ${version} (${releaseDate})`);
-          mainWindow?.webContents.send('update-available', result.updateInfo);
-        }
-      } catch (error) {
-        log.error('Update check failed:', error);
-        if (error.code === 404) {
-          log.info('No releases found. Create a release on GitHub first.');
-        }
-      }
-    };
-
-    // Initial check after delay
-    setTimeout(checkForUpdates, 3000);
-
-    // Periodic check
-    setInterval(checkForUpdates, 5 * 60 * 1000);
-  }
-
-  if (!isDev) {
     try {
-      autoUpdater.setFeedURL(updateConfig);
-      log.info('Update feed URL configured:', { ...updateConfig, token: '***' });
-
-      const checkForUpdates = async () => {
+      // Check if token is from collaborator
+      const checkToken = async () => {
         try {
           const result = await autoUpdater.checkForUpdates();
           log.info('Update check result:', result);
+          return true;
         } catch (error) {
-          log.error('Update check error:', error);
-          mainWindow?.webContents.send('update-error', error.message);
+          log.error('Token validation error:', error);
+          return false;
         }
       };
 
-      // Initial check
-      setTimeout(checkForUpdates, 3000);
+      if (checkToken()) {
+        autoUpdater.checkForUpdates();
+      } else {
+        log.error('Invalid token permissions');
+        mainWindow?.webContents.send('update-error', 'Invalid token permissions. Please ensure you have access to the repository.');
+      }
     } catch (error) {
-      log.error('Error configuring updater:', error);
+      log.error('Error during update check:', error);
     }
   }
 
@@ -289,12 +216,16 @@ autoUpdater.on('update-not-available', () => {
 });
 
 autoUpdater.on('error', (error) => {
-  log.error('AutoUpdater error:', error);
-  log.error('Error details:', error?.stack || 'No stack trace');
-  mainWindow?.webContents.send('update-error', {
-    message: error.message,
-    details: error?.stack
-  });
+  log.error('Update error:', error);
+  
+  // Handle specific errors
+  if (error.code === 'EPERM') {
+    mainWindow?.webContents.send('update-error', 'Permission denied. Please run the app as administrator.');
+  } else if (error.code === 'ENOENT') {
+    mainWindow?.webContents.send('update-error', 'Update file not found. Please try again.');
+  } else {
+    mainWindow?.webContents.send('update-error', `Update failed: ${error.message}`);
+  }
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
@@ -339,7 +270,15 @@ ipcMain.handle('check-update', async () => {
 });
 
 ipcMain.handle('download-update', async () => {
-  return await autoUpdater.downloadUpdate();
+  try {
+    if (!ensureUpdateDirectory()) {
+      throw new Error('Cannot access update directory');
+    }
+    return await autoUpdater.downloadUpdate();
+  } catch (error) {
+    log.error('Download failed:', error);
+    throw error;
+  }
 });
 
 ipcMain.handle('start-update', () => {

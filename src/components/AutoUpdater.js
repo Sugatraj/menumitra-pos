@@ -5,6 +5,8 @@ function AutoUpdater() {
   const [progress, setProgress] = useState(0);
   const [updateReady, setUpdateReady] = useState(false);
   const [newVersion, setNewVersion] = useState('');
+  const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const api = window.electronAPI;
@@ -12,18 +14,21 @@ function AutoUpdater() {
 
     api.onUpdateMessage((_event, message) => {
       setUpdateStatus(message);
+      setError(null);
       console.log('Update message:', message);
     });
 
     api.onUpdateAvailable((_event, info) => {
       try {
-        setUpdateStatus(`New version ${info.version} available. Downloading...`);
+        setUpdateStatus(`New version ${info.version} available. Click to download.`);
         setNewVersion(info.version);
+        setError(null);
         console.log('Update available:', {
           version: info.version,
           notes: info.releaseNotes
         });
       } catch (error) {
+        setError('Error processing update info');
         console.error('Error handling update info:', error);
       }
     });
@@ -32,71 +37,82 @@ function AutoUpdater() {
       setUpdateStatus(`Version ${info.version} is ready to install!`);
       setUpdateReady(true);
       setNewVersion(info.version);
+      setError(null);
       console.log('Update downloaded:', info);
     });
 
     api.onUpdateError((_event, error) => {
-      setUpdateStatus(`Update error: ${error}`);
+      setError(error.message || 'Update failed');
+      setUpdateStatus('Update failed');
       console.error('Update error:', error);
+      
+      // Implement retry logic
+      if (retryCount < 3) {
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          checkForUpdates();
+        }, 5000 * (retryCount + 1)); // Exponential backoff
+      }
     });
 
-    // Check for updates with error handling
     const checkForUpdates = async () => {
       try {
+        setError(null);
         await api.checkForUpdates();
       } catch (error) {
+        setError('Check for updates failed');
         console.error('Check for updates failed:', error.message);
         setUpdateStatus('Update check failed');
       }
     };
 
-    // Initial check
     checkForUpdates();
-
-    // Periodic check
-    const interval = setInterval(checkForUpdates, 5 * 60 * 1000);
+    const interval = setInterval(checkForUpdates, 30 * 60 * 1000); // Check every 30 minutes
 
     return () => {
       clearInterval(interval);
-      api.removeListener('update-message');
-      api.removeListener('update-available');
-      api.removeListener('update-downloaded');
-      api.removeListener('update-error');
+      ['update-message', 'update-available', 'update-downloaded', 'update-error']
+        .forEach(channel => api.removeListener(channel));
     };
-  }, []);
+  }, [retryCount]);
 
-  const installUpdate = () => {
+  const handleUpdate = async () => {
     const api = window.electronAPI;
-    if (api && updateReady) {
-      api.startUpdate();
+    if (!api) return;
+
+    try {
+      if (updateReady) {
+        await api.startUpdate();
+      } else if (newVersion) {
+        setUpdateStatus('Downloading update...');
+        await api.downloadUpdate();
+      }
+    } catch (error) {
+      setError('Update failed. Please try again.');
     }
   };
 
-  if (!updateStatus) return null;
+  if (!updateStatus && !error) return null;
 
   return (
     <div className="fixed bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg z-50">
-      <p className="text-gray-700">{updateStatus}</p>
+      {error ? (
+        <div className="text-red-500 mb-2">{error}</div>
+      ) : (
+        <p className="text-gray-700">{updateStatus}</p>
+      )}
       {progress > 0 && progress < 100 && (
         <div className="w-full bg-gray-200 rounded h-2 mt-2">
-          <div 
-            className="bg-blue-500 rounded h-2" 
-            style={{ width: `${progress}%` }}
-          />
+          <div className="bg-blue-500 rounded h-2" style={{ width: `${progress}%` }} />
         </div>
       )}
-      {updateReady && (
-        <div className="mt-2">
-          <p className="text-sm text-gray-600 mb-2">
-            Version {newVersion} is ready to install!
-          </p>
-          <button
-            onClick={installUpdate}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Install and Restart
-          </button>
-        </div>
+      {(newVersion || updateReady) && (
+        <button
+          onClick={handleUpdate}
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          {updateReady ? 'Install and Restart' : 'Download Update'}
+        </button>
       )}
     </div>
   );

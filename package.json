@@ -39,7 +39,9 @@
       "owner": "Sugatraj",
       "repo": "menumitra-pos",
       "private": true,
-      "releaseType": "release"
+      "releaseType": "release",
+      "token": "%GH_TOKEN%",
+      "publishAutoUpdate": false
     },
     "win": {
       "target": [
