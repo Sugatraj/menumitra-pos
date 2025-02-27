@@ -2,14 +2,28 @@ appId: com.menumitra.pos
 productName: MenuMitra POS
 directories:
   output: dist
+  buildResources: build
 files:
-  - from: build
-    to: build
-  - package.json
-  - public/electron.js
-  - public/preload.js
+  - 'build/**/*'
+  - 'public/**/*'
+  - 'package.json'
+publish:
+  provider: github
+  owner: Sugatraj
+  repo: menumitra-pos
+  private: true
+  token: ${GH_TOKEN}
+  releaseType: draft
 win:
-  target: nsis
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: public/icon.ico
+  requestedExecutionLevel: requireAdministrator
 nsis:
   oneClick: false
+  perMachine: true
   allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true

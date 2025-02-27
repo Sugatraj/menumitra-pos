@@ -1,6 +1,6 @@
 {
   "name": "pos-outlet",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "private": true,
   "description": "Restaurant Management App",
   "main": "public/electron.js",
@@ -27,28 +27,38 @@
     "appId": "com.menumitra.pos",
     "productName": "MenuMitra POS",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
     "files": [
       "build/**/*",
       "public/**/*",
       "package.json"
     ],
-    "publish": {
+    "publish": [{
       "provider": "github",
       "owner": "Sugatraj",
       "repo": "menumitra-pos",
       "private": true,
-      "releaseType": "release",
       "token": "%GH_TOKEN%",
-      "publishAutoUpdate": false
-    },
+      "releaseType": "draft"
+    }],
     "win": {
       "target": [
-        "nsis"
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
       ],
       "icon": "public/icon.ico",
       "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     }
   },
   "homepage": "./",

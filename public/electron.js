@@ -13,10 +13,10 @@ if (!gotTheLock) {
 }
 
 // Configure logging
-log.transports.file.level = 'info';
+log.transports.file.level = 'debug';
 autoUpdater.logger = log;
-autoUpdater.autoDownload = false; // Let's control download manually
-autoUpdater.autoInstallOnAppQuit = true; // Change to true for automatic downloads
+autoUpdater.autoDownload = false;
+autoUpdater.allowDowngrade = false;
 
 const server = 'https://Shekru-Labs-India/menumitra_pos/releases/download'; // Your repository URL
 
@@ -51,16 +51,6 @@ const updateConfig = {
   },
   updateConfigPath: path.join(app.getPath('userData'), 'update.json')
 };
-
-// Configure auto-updater
-autoUpdater.logger = log;
-autoUpdater.autoDownload = true;
-autoUpdater.allowDowngrade = false;
-autoUpdater.setFeedURL(updateConfig);
-
-// Add detailed logging
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'debug';
 
 // Ensure update directory exists and is writable
 function ensureUpdateDirectory() {
@@ -103,12 +93,11 @@ function createWindow() {
   });
 
   // Load app using custom protocol in production
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:3000');
-  } else {
-    // Fix the path to load index.html
-    mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
-  }
+  mainWindow.loadURL(
+    isDev
+      ? 'http://localhost:3000'
+      : `file://${path.join(__dirname, '../build/index.html')}`
+  );
 
   if (isDev) {
     mainWindow.webContents.openDevTools();
@@ -190,109 +179,49 @@ function createWindow() {
   });
 }
 
+app.whenReady().then(createWindow);
+
 // Auto-updater events
 autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for updates...');
-  mainWindow?.webContents.send('update-message', 'Checking for updates...');
+  mainWindow.webContents.send('update-message', 'Checking for updates...');
 });
 
 autoUpdater.on('update-available', (info) => {
-  log.info('Update available:', info);
-  const currentVersion = app.getVersion();
-  if (info.version > currentVersion) {
-    mainWindow?.webContents.send('update-available', {
-      version: info.version,
-      releaseNotes: info.releaseNotes
-    });
-  }
-  // Auto download the update
-  autoUpdater.downloadUpdate().catch(err => {
-    log.error('Download failed:', err);
-  });
+  mainWindow.webContents.send('update-available', info);
 });
 
 autoUpdater.on('update-not-available', () => {
-  mainWindow?.webContents.send('update-not-available');
+  mainWindow.webContents.send('update-message', 'App is up to date.');
 });
 
-autoUpdater.on('error', (error) => {
-  log.error('Update error:', error);
-  
-  // Handle specific errors
-  if (error.code === 'EPERM') {
-    mainWindow?.webContents.send('update-error', 'Permission denied. Please run the app as administrator.');
-  } else if (error.code === 'ENOENT') {
-    mainWindow?.webContents.send('update-error', 'Update file not found. Please try again.');
-  } else {
-    mainWindow?.webContents.send('update-error', `Update failed: ${error.message}`);
-  }
+autoUpdater.on('error', (err) => {
+  log.error('Update error:', err);
+  mainWindow.webContents.send('update-error', {
+    message: `Update error: ${err.message}`
+  });
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
-  let message = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
-  log.info(message);
-  mainWindow?.webContents.send('download-progress', progressObj);
+  mainWindow.webContents.send('download-progress', progressObj);
 });
 
 autoUpdater.on('update-downloaded', (info) => {
-  log.info('Update downloaded:', info);
-  mainWindow?.webContents.send('update-downloaded', {
-    version: info.version,
-    releaseNotes: info.releaseNotes
-  });
-  
-  // Notify user that update is ready
-  const notification = new Notification({
-    title: 'Update Ready',
-    body: `Version ${info.version} is ready to install`
-  });
-  notification.show();
+  mainWindow.webContents.send('update-downloaded', info);
 });
 
 // IPC handlers
-ipcMain.handle('check-update', async () => {
-  try {
-    if (!ensureUpdateDirectory()) {
-      throw new Error('Update directory not accessible');
-    }
-    const result = await autoUpdater.checkForUpdates();
-    // Return a simplified version of the update info
-    return {
-      updateAvailable: result?.updateInfo?.version !== app.getVersion(),
-      currentVersion: app.getVersion(),
-      newVersion: result?.updateInfo?.version,
-      releaseNotes: result?.updateInfo?.releaseNotes || ''
-    };
-  } catch (error) {
-    log.error('Check update error:', error);
-    throw new Error(error.message);
+ipcMain.handle('check-update', () => {
+  if (!isDev) {
+    return autoUpdater.checkForUpdates();
   }
 });
 
-ipcMain.handle('download-update', async () => {
-  try {
-    if (!ensureUpdateDirectory()) {
-      throw new Error('Cannot access update directory');
-    }
-    return await autoUpdater.downloadUpdate();
-  } catch (error) {
-    log.error('Download failed:', error);
-    throw error;
-  }
+ipcMain.handle('download-update', () => {
+  return autoUpdater.downloadUpdate();
 });
 
-ipcMain.handle('start-update', () => {
-  autoUpdater.quitAndInstall();
-});
-
-app.whenReady().then(() => {
-  // Register file protocol handler
-  protocol.registerFileProtocol('file', (request, callback) => {
-    const filePath = request.url.replace('file:///', '');
-    callback(decodeURI(path.normalize(`${__dirname}/../${filePath}`)));
-  });
-
-  createWindow();
+ipcMain.handle('quit-and-install', () => {
+  autoUpdater.quitAndInstall(false, true);
 });
 
 app.on('window-all-closed', () => {
